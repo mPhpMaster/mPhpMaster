@@ -11,6 +11,10 @@
 *i'll fill this area later 😴*
 
 
+
+![mPhpMaster's GitHub stats](https://github-readme-stats.vercel.app/api?username=mphpmaster&show_icons=true&private=true)
+![hlaCk's GitHub stats](https://github-readme-stats.vercel.app/api?username=hlaCk&show_icons=true&private=true)
+
 ---
 
 
