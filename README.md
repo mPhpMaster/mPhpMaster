@@ -23,6 +23,26 @@
 > [![](http://hlack.net/jetbrains.svg)](https://www.jetbrains.com/?from=UnderZ)
 
 
+
+
+---
+
+<p align="left">
+<a href="https://www.decodercan.com/" target="blank">
+  <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="decodercan" height="30" width="40" />
+</a>
+<a href="https://www.linkedin.com/in/mohammad-al-safadi/" target="blank">
+  <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Mohammad Al-Safadi" height="30" width="40" />
+</a>
+<a href="https://github.com/hlaCk" target="blank">
+  <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="hlaCk" height="30" width="40" />
+</a>
+<a href="https://github.com/m-alsafadi" target="blank">
+  <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="m-alsafadi" height="30" width="40" />
+</a>
+</p>
+
+
 <!---
 mPhpMaster/mPhpMaster is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
