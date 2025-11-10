@@ -29,9 +29,9 @@
 ---
 
 <p align="left">
-<a href="https://www.decodercan.com/" target="blank">
+<!-- a href="https://www.decodercan.com/" target="blank">
   <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="decodercan" height="30" width="40" />
-</a>
+</a -->
 <a href="https://www.linkedin.com/in/mohammad-al-safadi/" target="blank">
   <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Mohammad Al-Safadi" height="30" width="40" />
 <a href="https://twitter.com/mrhlack" target="blank">
