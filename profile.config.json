@@ -28,6 +28,10 @@
     "supabase": "Supabase"
   },
   "iconsPerLine": 9,
+  "releases": {
+    "count": 3,
+    "exclude": ["SteamTools", "steam-lua-manifestor", "chess-vision", "word-bomb-tool", "word-bomb-tool-cs", "word-bomb-tool-go"]
+  },
   "featured": [
     {
       "repo": "echo-sub",

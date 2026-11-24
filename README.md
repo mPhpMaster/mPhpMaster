@@ -1,6 +1,6 @@
 <!-- hero:start -->
 <p align="center">
-<img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/terminal.svg" width="830" alt="Terminal session. whoami: Mohammad Al-Safadi, software developer, Saudi Arabia. about.txt: PHP, Laravel and Nova for years. Now also Windows tools, Android apps, browser extensions and small games, in Arabic and English. Then a bar for each of the last 53 weeks of contributions, and totals for repos, packages, installs and stars.">
+<picture><source media="(max-width: 767px)" srcset="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/terminal-mobile.svg"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/terminal.svg" width="830" alt="Terminal session. whoami: Mohammad Al-Safadi, software developer, Saudi Arabia. about.txt: PHP, Laravel and Nova for years. Now also Windows tools, Android apps, browser extensions and small games, in Arabic and English. Then a bar for each of the last 53 weeks of contributions, and totals for repos, packages, installs and stars."></picture>
 </p>
 <!-- hero:end -->
 
@@ -25,6 +25,14 @@ Also in that folder:
 - **Tools:** [EchoSub Lens](https://github.com/mPhpMaster/echo-sub-lens) translates on-screen text in place · [Sayang Translate](https://github.com/mPhpMaster/sayang-translate-public) translates WhatsApp and Telegram chats on Android · [ATS CV Studio](https://github.com/mPhpMaster/ats-cv-studio) builds and checks CVs · [SteganographyPy](https://github.com/mPhpMaster/SteganographyPy) hides encrypted archives inside media files
 - **Games:** [LetterUp](https://github.com/mPhpMaster/letterup), a Discord word game · [MTO](https://github.com/mPhpMaster/mto-game), an Arabic strategy card game · [Maqlab](https://github.com/mPhpMaster/maqlab), a party game played from phones
 - **Web:** [What2Watch](https://github.com/mPhpMaster/what-to-watch) picks something to watch on Shahid or Netflix · [pixel-pets](https://github.com/mPhpMaster/pixel-pets) and [parrot.js](https://github.com/mPhpMaster/parrot.js) put pixel-art pets on your cursor
+
+### `$ tail -3 ~/.releases`
+
+<!-- releases:start -->
+- `2026-11-24` [Game Forge v0.9.3](https://github.com/mPhpMaster/game-forge-releases/releases/tag/v0.9.3)
+- `2026-11-21` [Wavebreak v1.7.0](https://github.com/mPhpMaster/wavebreak-godot-game/releases/tag/v1.7.0)
+- `2026-11-20` [FriendsInVoice v1.24.0](https://github.com/mPhpMaster/FriendsInVoice/releases/tag/v1.24.0)
+<!-- releases:end -->
 
 ### `$ ls ~/.toolbox`
 

@@ -40,7 +40,7 @@ query ($login: String!, $after: String) {
         url
         stargazerCount
         primaryLanguage { name color }
-        latestRelease { tagName }
+        latestRelease { tagName publishedAt url }
       }
     }
   }
@@ -231,12 +231,15 @@ ${body}
  * The hero: a shell session that types itself. Every piece of text is pinned to a
  * character grid with textLength, so the layout and the typing stay exact whichever
  * monospace font the reader has.
+ *
+ * It is drawn twice: wide for desktop, and narrow with a short prompt for phones, where
+ * fewer columns mean larger letters. Lines that do not fit the narrow window wrap.
  */
-function terminalCard({ weeks, stats }) {
-  const COLS = 68, CW = 9, LH = 24, PAD_X = 24, PAD_Y = 20, BAR = 38;
+function terminalCard({ weeks, stats }, { cols: COLS, shell }) {
+  const CW = 9, LH = 24, PAD_X = 24, PAD_Y = 20, BAR = 38;
   const W = PAD_X * 2 + COLS * CW;
-  const promptParts = [[config.shell, C.green], [':', C.text], ['~', C.blue], ['$', C.text]];
-  const promptCols = config.shell.length + 4;
+  const promptParts = [[shell, C.green], [':', C.text], ['~', C.blue], ['$', C.text]];
+  const promptCols = shell.length + 4;
 
   const parts = [];
   let row = 0;
@@ -281,7 +284,11 @@ function terminalCard({ weeks, stats }) {
   };
 
   command('whoami');
-  output([[config.name, { fill: C.text, bold: true }], [`, ${config.role}, ${config.location}`]]);
+  wrapColumns(`${config.name}, ${config.role}, ${config.location}`, COLS).forEach((line, i) => {
+    const named = i === 0 && line.startsWith(config.name);
+    const rest = named ? line.slice(config.name.length) : line;
+    output([...(named ? [[config.name, { fill: C.text, bold: true }]] : []), ...(rest ? [[rest]] : [])]);
+  });
   clock += 0.35;
 
   command('cat about.txt');
@@ -290,6 +297,10 @@ function terminalCard({ weeks, stats }) {
 
   command(`./activity --weeks ${weeks.length}`);
   const peak = Math.max(1, ...weeks.map((week) => week.total));
+  // One bar per column with the count beside them, or, when that does not fit, bars
+  // squeezed across the full width with the count on its own line underneath.
+  const beside = weeks.length + 2 + 'contributions'.length <= COLS;
+  const pitch = beside ? CW : (COLS * CW) / weeks.length;
   const base = top(row) + LH * 2 - 6;
   weeks.forEach((week, i) => {
     // Square-root scale, so quiet weeks still show next to the busiest one.
@@ -298,21 +309,29 @@ function terminalCard({ weeks, stats }) {
     const fill = week.total ? C.heat[Math.min(3, Math.max(0, Math.ceil(ratio * 4) - 1))] : C.track;
     // The current week is still filling up, so draw it lighter than the finished ones.
     const unfinished = i === weeks.length - 1 && week.days < 7;
-    parts.push(`<rect class="b" x="${x(i) + 1}" y="${num(base - height)}" width="${CW - 2}" height="${num(height)}" rx="1" fill="${fill}"${unfinished ? ' opacity=".55"' : ''} style="${delay(clock + i * 0.01)}"/>`);
+    parts.push(`<rect class="b" x="${num(PAD_X + i * pitch + 1)}" y="${num(base - height)}" width="${num(pitch - 2)}" height="${num(height)}" rx="1" fill="${fill}"${unfinished ? ' opacity=".55"' : ''} style="${delay(clock + i * 0.01)}"/>`);
   });
-  const labelCol = weeks.length + 2;
-  parts.push(text(labelCol, row, full(stats.contributions), { fill: C.amber, bold: true, style: delay(clock + 0.3) }));
-  parts.push(text(labelCol, row + 1, 'contributions', { fill: C.muted, style: delay(clock + 0.3) }));
-  row += 2;
-  clock += 1;
+  const count = [[full(stats.contributions), { fill: C.amber, bold: true }], ['contributions', { fill: C.muted }]];
+  clock += 0.3;
+  if (beside) {
+    count.forEach(([value, options], i) => parts.push(text(weeks.length + 2, row + i, value, { ...options, style: delay(clock) })));
+    row += 2;
+  } else {
+    row += 2;
+    output([count[0], [count[1][0], { ...count[1][1], skip: 1 }]]);
+  }
+  clock += 0.7;
 
   command('./stats');
-  output([
-    ['repos', { fill: C.muted }], [String(stats.repos), { fill: C.amber, skip: 1 }],
-    ['packages', { fill: C.muted, skip: 3 }], [String(stats.packages), { fill: C.amber, skip: 1 }],
-    ['installs', { fill: C.muted, skip: 3 }], [compact(stats.installs), { fill: C.amber, skip: 1 }],
-    ['stars', { fill: C.muted, skip: 3 }], [String(stats.stars), { fill: C.amber, skip: 1 }],
-  ]);
+  const totals = [['repos', String(stats.repos)], ['packages', String(stats.packages)], ['installs', compact(stats.installs)], ['stars', String(stats.stars)]];
+  const pieces = (list) => list.flatMap(([name, value], i) => [[name, { fill: C.muted, skip: i ? 3 : 0 }], [value, { fill: C.amber, skip: 1 }]]);
+  const width = totals.reduce((sum, [name, value], i) => sum + name.length + 1 + value.length + (i ? 3 : 0), 0);
+  if (width <= COLS) {
+    output(pieces(totals));
+  } else {
+    output(pieces(totals.slice(0, 2)));
+    output(pieces(totals.slice(2)));
+  }
   clock += 0.35;
 
   prompt();
@@ -463,9 +482,26 @@ async function main() {
     };
   });
 
+  // The newest releases across all repos, leaving out the ones the config hides.
+  const hidden = new Set((config.releases?.exclude ?? []).map((name) => name.toLowerCase()));
+  const releases = repos
+    .filter((repo) => repo.latestRelease?.publishedAt && !hidden.has(repo.name.toLowerCase()))
+    .map((repo) => {
+      const version = repo.latestRelease.tagName.match(/\d+(\.\d+)+.*/);
+      return {
+        title: config.featured.find((entry) => entry.repo.toLowerCase() === repo.name.toLowerCase())?.title ?? repo.name,
+        version: version ? `v${version[0]}` : repo.latestRelease.tagName,
+        date: repo.latestRelease.publishedAt.slice(0, 10),
+        url: repo.latestRelease.url,
+      };
+    })
+    .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
+    .slice(0, config.releases?.count ?? 3);
+
   // Everything is fetched and checked by now, so a failure above leaves the old files untouched.
   const files = {
-    'assets/terminal.svg': terminalCard({ weeks, stats }),
+    'assets/terminal.svg': terminalCard({ weeks, stats }, { cols: 68, shell: config.shell }),
+    'assets/terminal-mobile.svg': terminalCard({ weeks, stats }, { cols: 40, shell: config.shell.split('@')[0] }),
     'assets/toolbox.svg': toolbox,
   };
   for (const project of featured) files[`assets/cards/${project.repo}.svg`] = showcaseCard(project);
@@ -483,7 +519,11 @@ async function main() {
   const toolboxWidth = Math.min(Object.keys(config.icons).length, config.iconsPerLine) * 55 + 3;
 
   let readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
-  readme = replaceRegion(readme, 'hero', `<p align="center">\n${image('assets/terminal.svg', 830, heroAlt)}\n</p>`);
+  // Phones get the narrow terminal: GitHub keeps the width media query on the <source>.
+  readme = replaceRegion(readme, 'hero', `<p align="center">\n<picture><source media="(max-width: 767px)" srcset="${RAW}/assets/terminal-mobile.svg">${image('assets/terminal.svg', 830, heroAlt)}</picture>\n</p>`);
+  readme = replaceRegion(readme, 'releases', releases
+    .map((release) => `- \`${release.date}\` [${release.title} ${release.version}](${release.url})`)
+    .join('\n'));
   readme = replaceRegion(readme, 'featured', `<p align="center">\n${featured
     .map((project) => `<a href="${project.url}">${image(`assets/cards/${project.repo}.svg`, 272, `${project.title}: ${project.text}`)}</a>`)
     .join('\n')}\n</p>`);
