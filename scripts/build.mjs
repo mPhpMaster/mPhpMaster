@@ -3,15 +3,15 @@
  * Builds this profile.
  *
  * Reads profile.config.json, pulls live numbers from GitHub and Packagist, draws the
- * SVG cards in assets/ (a dark and a light copy of each), and refreshes the marked
- * parts of README.md. Run it with `node scripts/build.mjs`.
+ * terminal and the showcase cards in assets/, and refreshes the marked parts of
+ * README.md. Run it with `node scripts/build.mjs`.
  *
  * No dependencies. Needs Node 18 or newer and a GitHub token: GITHUB_TOKEN or GH_TOKEN,
  * or a logged-in `gh` CLI.
  */
 
 import { execSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -39,10 +39,7 @@ query ($login: String!, $after: String) {
         name
         url
         stargazerCount
-        createdAt
-        pushedAt
         primaryLanguage { name color }
-        languages(first: 10, orderBy: { field: SIZE, direction: DESC }) { edges { size node { name color } } }
         latestRelease { tagName }
       }
     }
@@ -102,40 +99,44 @@ async function fetchPackagist(vendors) {
   return installs;
 }
 
-function languageShares(repos, keep) {
-  const byName = new Map();
-  for (const repo of repos) {
-    for (const { size, node } of repo.languages.edges) {
-      const entry = byName.get(node.name) ?? { name: node.name, color: node.color ?? '#8b949e', size: 0 };
-      entry.size += size;
-      byName.set(node.name, entry);
-    }
+/**
+ * The row of language and tool icons, drawn by skillicons.dev. It only changes when the
+ * list in the config does, so the copy in assets/ is reused until then.
+ */
+async function toolboxIcons(path) {
+  const ids = Object.keys(config.icons);
+  const marker = `<!-- icons:${ids.join(',')} per-line:${config.iconsPerLine} -->`;
+  if (existsSync(path)) {
+    const current = readFileSync(path, 'utf8');
+    if (current.includes(marker)) return current;
   }
-  const all = [...byName.values()].sort((a, b) => b.size - a.size);
-  const total = all.reduce((sum, language) => sum + language.size, 0) || 1;
-  const top = all.slice(0, keep).map((language) => ({ ...language, share: language.size / total }));
-  return { top, rest: Math.max(0, 1 - top.reduce((sum, language) => sum + language.share, 0)) };
+  const url = `https://skillicons.dev/icons?i=${ids.join(',')}&theme=dark&perline=${config.iconsPerLine}`;
+  const response = await fetch(url, { headers: { 'user-agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`Icon service failed (${response.status}): ${url}`);
+  const svg = (await response.text()).trim();
+  const drawn = (svg.match(/<g transform="translate\(/g) ?? []).length;
+  if (!svg.startsWith('<svg') || /<script|<foreignObject|\son\w+\s*=|javascript:|href\s*=\s*["']https?:/i.test(svg)) {
+    throw new Error('The icon service returned something that is not a plain SVG.');
+  }
+  if (drawn !== ids.length) {
+    throw new Error(`The icon service drew ${drawn} of ${ids.length} icons. Check the ids under "icons" in profile.config.json.`);
+  }
+  return `${svg}\n${marker}\n`;
 }
 
 // ---------------------------------------------------------------------------------------
 // Drawing helpers
 // ---------------------------------------------------------------------------------------
 
-const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif";
 const MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace";
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const THEMES = {
-  dark: {
-    bg: '#10151C', bgEnd: '#0B0F14', border: '#272E38', track: '#1E252E',
-    text: '#F0F3F6', muted: '#9BA5B1', faint: '#7D8794',
-    accent: '#FFB454', hot: '#FF6A45', warm: '#FFB454', glow: 0.2,
-  },
-  light: {
-    bg: '#FFFCF7', bgEnd: '#FFF6E9', border: '#EBDFCB', track: '#EFE4D1',
-    text: '#1B1F24', muted: '#5A636E', faint: '#6B737E',
-    accent: '#B4530A', hot: '#E5482A', warm: '#F5A524', glow: 0.16,
-  },
+// One dark terminal palette for both GitHub themes: a terminal window is dark either way.
+const C = {
+  window: '#010409', chrome: '#161b22', border: '#30363d', track: '#21262d',
+  text: '#e6edf3', soft: '#c9d1d9', muted: '#8b949e',
+  green: '#3fb950', blue: '#58a6ff', amber: '#e3b341',
+  heat: ['#196c2e', '#2ea043', '#3fb950', '#56d364'],
+  dots: ['#ff5f56', '#ffbd2e', '#27c93f'],
 };
 
 const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -147,31 +148,13 @@ const compact = (value) => {
   return `${Math.round(value / 1000)}k`;
 };
 
-/**
- * Rough text width in px. The cards use the reader's system font, so this is an estimate
- * and every layout that depends on it leaves room to spare.
- */
-function textWidth(text, size, { bold = false, mono = false } = {}) {
-  if (mono) return text.length * size * 0.61;
-  let em = 0;
-  for (const ch of text) {
-    if (" .,:;|!'ijl".includes(ch)) em += 0.27;
-    else if ('ftrI()[]-/'.includes(ch)) em += 0.34;
-    else if ('mw'.includes(ch)) em += 0.82;
-    else if ('MW'.includes(ch)) em += 0.9;
-    else if (ch >= 'A' && ch <= 'Z') em += 0.66;
-    else if (ch >= '0' && ch <= '9') em += 0.56;
-    else em += 0.54;
-  }
-  return em * size * (bold ? 1.07 : 1);
-}
-
-function wrap(text, width, size, maxLines) {
+/** Wraps text to a number of monospace columns. */
+function wrapColumns(text, columns, maxLines = Infinity) {
   const lines = [];
   let line = '';
   for (const word of text.split(/\s+/)) {
     const next = line ? `${line} ${word}` : word;
-    if (line && textWidth(next, size) > width) {
+    if (line && next.length > columns) {
       lines.push(line);
       line = word;
     } else {
@@ -183,7 +166,7 @@ function wrap(text, width, size, maxLines) {
 
   lines.length = maxLines;
   let last = lines[maxLines - 1];
-  while (last.includes(' ') && textWidth(`${last}…`, size) > width) last = last.slice(0, last.lastIndexOf(' '));
+  while (last.includes(' ') && last.length + 1 > columns) last = last.slice(0, last.lastIndexOf(' '));
   lines[maxLines - 1] = `${last.replace(/[.,;:]$/, '')}…`;
   return lines;
 }
@@ -195,8 +178,8 @@ const luminance = (hex) => {
 };
 
 /** Some language colours (PowerShell, Lua) are nearly black. Lift them until they show on a dark card. */
-function languageColor(hex, themeName) {
-  if (themeName !== 'dark' || !/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+function onDark(hex) {
+  if (!/^#[0-9a-f]{6}$/i.test(hex ?? '')) return C.muted;
   let color = hex;
   for (let mix = 0.1; luminance(color) < 0.13 && mix < 0.95; mix += 0.1) {
     color = `#${channels(hex).map((c) => Math.round(c + (255 - c) * mix).toString(16).padStart(2, '0')).join('')}`;
@@ -204,7 +187,7 @@ function languageColor(hex, themeName) {
   return color;
 }
 
-function starPoints(cx, cy, outer = 5.6, inner = 2.4) {
+function starPoints(cx, cy, outer = 5, inner = 2.1) {
   return Array.from({ length: 10 }, (_, i) => {
     const angle = (-90 + i * 36) * (Math.PI / 180);
     const radius = i % 2 ? inner : outer;
@@ -212,156 +195,176 @@ function starPoints(cx, cy, outer = 5.6, inner = 2.4) {
   }).join(' ');
 }
 
-/** The shared card: a rounded panel with the theme's text styles. */
-function svg(width, height, theme, label, body, { defs = '', css = '' } = {}) {
+/** A terminal window: rounded frame, title bar with the three dots, and a centred title. */
+function terminalWindow(width, height, barHeight, title, label, body, css = '') {
+  const large = barHeight > 30;
+  const dot = barHeight / 2;
+  const radius = large ? 6 : 3.5;
+  const gap = large ? 18 : 12;
+  // On a small window the title is centred in the space left of the dots, so long names clear them.
+  const dotsEnd = dot + 1 + gap * 2 + radius;
+  const titleX = large ? width / 2 : (dotsEnd + width) / 2;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(label)}">
 <title>${esc(label)}</title>
 <style>
-text{font-family:${SANS};fill:${theme.text}}
-.mono{font-family:${MONO}}
-.muted{fill:${theme.muted}}
-.faint{fill:${theme.faint}}
-.accent{fill:${theme.accent}}
+text{font-family:${MONO}}
 ${css}</style>
-<defs>
-<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${theme.bg}"/><stop offset="1" stop-color="${theme.bgEnd}"/></linearGradient>
-<clipPath id="panel"><rect x=".5" y=".5" width="${width - 1}" height="${height - 1}" rx="12"/></clipPath>
-${defs}</defs>
-<rect x=".5" y=".5" width="${width - 1}" height="${height - 1}" rx="12" fill="url(#bg)" stroke="${theme.border}"/>
+<defs><clipPath id="frame"><rect x=".5" y=".5" width="${width - 1}" height="${height - 1}" rx="10"/></clipPath></defs>
+<g clip-path="url(#frame)">
+<rect width="${width}" height="${height}" fill="${C.window}"/>
+<rect width="${width}" height="${barHeight}" fill="${C.chrome}"/>
+<path d="M0 ${barHeight + 0.5}H${width}" stroke="${C.border}"/>
+${C.dots.map((fill, i) => `<circle cx="${dot + 1 + i * gap}" cy="${dot}" r="${radius}" fill="${fill}"/>`).join('')}
+<text x="${num(titleX)}" y="${num(dot + (large ? 4.5 : 4))}" font-size="${large ? 12.5 : 11}" fill="${C.muted}" text-anchor="middle">${esc(title)}</text>
 ${body}
+</g>
+<rect x=".5" y=".5" width="${width - 1}" height="${height - 1}" rx="10" fill="none" stroke="${C.border}"/>
 </svg>
 `;
 }
-
-const eyebrow = (text, x, y) =>
-  `<text class="mono accent" x="${x}" y="${y}" font-size="10.5" letter-spacing="1.3">${esc(text.toUpperCase())}</text>`;
 
 // ---------------------------------------------------------------------------------------
 // Cards
 // ---------------------------------------------------------------------------------------
 
-/** Name, tagline, and a bar for each of the last 53 weeks of contributions. */
-function heroCard(theme, { weeks, total }) {
-  const W = 830, H = 300, PAD = 40;
-  const top = 164, base = 258;
-  const pitch = (W - PAD * 2) / weeks.length;
-  const barWidth = Math.round(pitch * 0.66);
+/**
+ * The hero: a shell session that types itself. Every piece of text is pinned to a
+ * character grid with textLength, so the layout and the typing stay exact whichever
+ * monospace font the reader has.
+ */
+function terminalCard({ weeks, stats }) {
+  const COLS = 68, CW = 9, LH = 24, PAD_X = 24, PAD_Y = 20, BAR = 38;
+  const W = PAD_X * 2 + COLS * CW;
+  const promptParts = [[config.shell, C.green], [':', C.text], ['~', C.blue], ['$', C.text]];
+  const promptCols = config.shell.length + 4;
+
+  const parts = [];
+  let row = 0;
+  let clock = 0.5; // seconds from load: when the next thing appears
+
+  const x = (col) => PAD_X + col * CW;
+  const top = (r) => BAR + PAD_Y + r * LH;
+  const delay = (seconds) => `animation-delay:${num(seconds)}s`;
+  const text = (col, r, value, { fill = C.soft, bold = false, cls = 'o', style = '' } = {}) =>
+    `<text x="${x(col)}" y="${top(r) + 17}" textLength="${value.length * CW}" fill="${fill}"${bold ? ' font-weight="700"' : ''} class="${cls}" style="${style}">${esc(value)}</text>`;
+
+  const prompt = () => {
+    let col = 0;
+    for (const [value, fill] of promptParts) {
+      parts.push(text(col, row, value, { fill, style: delay(clock) }));
+      col += value.length;
+    }
+  };
+
+  /** A prompt, then the command typed one character at a time behind a moving caret. */
+  const command = (value) => {
+    prompt();
+    const start = clock + 0.3;
+    const duration = value.length * 0.055;
+    const typing = `--w:${value.length * CW}px;${delay(start)};animation-duration:${num(duration)}s;animation-timing-function:steps(${value.length},end)`;
+    parts.push(`<text x="${x(promptCols)}" y="${top(row) + 17}" textLength="${value.length * CW}" fill="${C.text}">${esc(value)}</text>`);
+    // The curtain hides what is not typed yet; the caret rides its left edge.
+    parts.push(`<rect class="m" x="${x(promptCols)}" y="${top(row)}" width="${value.length * CW}" height="${LH}" fill="${C.window}" style="${typing}"/>`);
+    parts.push(`<rect class="k" x="${x(promptCols)}" y="${top(row) + 3}" width="${CW}" height="18" fill="${C.soft}" style="${typing}"/>`);
+    row += 1;
+    clock = start + duration + 0.25;
+  };
+
+  /** One line of output made of [text, options] pieces placed one after another. */
+  const output = (pieces) => {
+    let col = 0;
+    for (const [value, options = {}] of pieces) {
+      parts.push(text(col + (options.skip ?? 0), row, value, { ...options, style: delay(clock) }));
+      col += value.length + (options.skip ?? 0);
+    }
+    row += 1;
+  };
+
+  command('whoami');
+  output([[config.name, { fill: C.text, bold: true }], [`, ${config.role}, ${config.location}`]]);
+  clock += 0.35;
+
+  command('cat about.txt');
+  for (const line of wrapColumns(config.about, COLS)) output([[line]]);
+  clock += 0.35;
+
+  command(`./activity --weeks ${weeks.length}`);
   const peak = Math.max(1, ...weeks.map((week) => week.total));
-  const barX = (i) => PAD + i * pitch + (pitch - barWidth) / 2;
-
-  const bars = weeks.map((week, i) => {
+  const base = top(row) + LH * 2 - 6;
+  weeks.forEach((week, i) => {
     // Square-root scale, so quiet weeks still show next to the busiest one.
-    const height = week.total ? Math.max(3, Math.sqrt(week.total / peak) * (base - top)) : 2;
-    const radius = Math.min(3, height, barWidth / 2);
-    const x = barX(i), y = base - height;
-    const d = `M${num(x)} ${base}V${num(y + radius)}Q${num(x)} ${num(y)} ${num(x + radius)} ${num(y)}`
-      + `H${num(x + barWidth - radius)}Q${num(x + barWidth)} ${num(y)} ${num(x + barWidth)} ${num(y + radius)}V${base}Z`;
+    const ratio = Math.sqrt(week.total / peak);
+    const height = week.total ? Math.max(3, ratio * (LH * 2 - 12)) : 2;
+    const fill = week.total ? C.heat[Math.min(3, Math.max(0, Math.ceil(ratio * 4) - 1))] : C.track;
     // The current week is still filling up, so draw it lighter than the finished ones.
-    const unfinished = i === weeks.length - 1 && week.days.length < 7;
-    return `<path class="bar" style="animation-delay:${i * 14}ms" d="${d}" fill="${week.total ? 'url(#heat)' : theme.track}"${unfinished ? ' opacity=".5"' : ''}/>`;
+    const unfinished = i === weeks.length - 1 && week.days < 7;
+    parts.push(`<rect class="b" x="${x(i) + 1}" y="${num(base - height)}" width="${CW - 2}" height="${num(height)}" rx="1" fill="${fill}"${unfinished ? ' opacity=".55"' : ''} style="${delay(clock + i * 0.01)}"/>`);
   });
+  const labelCol = weeks.length + 2;
+  parts.push(text(labelCol, row, full(stats.contributions), { fill: C.amber, bold: true, style: delay(clock + 0.3) }));
+  parts.push(text(labelCol, row + 1, 'contributions', { fill: C.muted, style: delay(clock + 0.3) }));
+  row += 2;
+  clock += 1;
 
-  let lastTick = -Infinity;
-  const ticks = weeks.flatMap((week, i) => {
-    const firstOfMonth = week.days.find((day) => day.endsWith('-01'));
-    const x = barX(i);
-    if (!firstOfMonth || x - lastTick < 30 || x > W - PAD - 20) return [];
-    lastTick = x;
-    return `<text class="mono faint" x="${num(x)}" y="${base + 20}" font-size="10.5">${MONTHS[+firstOfMonth.slice(5, 7) - 1]}</text>`;
-  });
+  command('./stats');
+  output([
+    ['repos', { fill: C.muted }], [String(stats.repos), { fill: C.amber, skip: 1 }],
+    ['packages', { fill: C.muted, skip: 3 }], [String(stats.packages), { fill: C.amber, skip: 1 }],
+    ['installs', { fill: C.muted, skip: 3 }], [compact(stats.installs), { fill: C.amber, skip: 1 }],
+    ['stars', { fill: C.muted, skip: 3 }], [String(stats.stars), { fill: C.amber, skip: 1 }],
+  ]);
+  clock += 0.35;
 
-  const body = `<ellipse cx="${num(W * 0.8)}" cy="${base}" rx="320" ry="150" fill="url(#glow)" clip-path="url(#panel)"/>
-<text class="mono accent" x="${PAD}" y="52" font-size="12" letter-spacing="1.6">${esc(config.eyebrow.toUpperCase())}</text>
-<text x="${PAD}" y="100" font-size="42" font-weight="800" letter-spacing="-.8">${esc(config.name)}</text>
-<text class="muted" x="${PAD}" y="130" font-size="17">${esc(config.tagline)}</text>
-<text x="${W - PAD}" y="80" font-size="32" font-weight="800" text-anchor="end">${full(total)}</text>
-<text class="mono muted" x="${W - PAD}" y="100" font-size="11.5" text-anchor="end">contributions · last 12 months</text>
-${bars.join('\n')}
-<path d="M${PAD} ${base + 0.5}H${W - PAD}" stroke="${theme.border}"/>
-${ticks.join('\n')}`;
+  prompt();
+  parts.push(`<rect class="f" x="${x(promptCols)}" y="${top(row) + 3}" width="${CW}" height="18" fill="${C.soft}" style="animation-delay:${num(clock)}s,${num(clock)}s"/>`);
+  row += 1;
 
-  const defs = `<linearGradient id="heat" gradientUnits="userSpaceOnUse" x1="0" y1="${top}" x2="0" y2="${base}"><stop offset="0" stop-color="${theme.hot}"/><stop offset="1" stop-color="${theme.warm}"/></linearGradient>
-<radialGradient id="glow"><stop offset="0" stop-color="${theme.hot}" stop-opacity="${theme.glow}"/><stop offset="1" stop-color="${theme.hot}" stop-opacity="0"/></radialGradient>
-`;
-  const css = `@media (prefers-reduced-motion:no-preference){
-.bar{transform-box:fill-box;transform-origin:50% 100%;animation:rise .8s cubic-bezier(.2,.9,.25,1) both}
+  // Without animation (reduced motion, or a viewer that does not animate) everything is
+  // simply there: the keyframes only describe the hidden state things start from.
+  const css = `text{font-size:15px}
+.m,.k{opacity:0}
+@media (prefers-reduced-motion:no-preference){
+.o{animation:show .01s linear backwards}
+.m{animation:slide 1s linear backwards}
+.k{animation:slide 1s linear}
+.b{transform-box:fill-box;transform-origin:50% 100%;animation:rise .4s cubic-bezier(.2,.9,.25,1) backwards}
+.f{animation:show .01s linear backwards,blink 1.1s steps(1) infinite}
+@keyframes show{from{opacity:0}}
+@keyframes slide{from{opacity:1;transform:translateX(0)}to{opacity:1;transform:translateX(var(--w))}}
 @keyframes rise{from{transform:scaleY(0)}}
+@keyframes blink{50%{opacity:0}}
 }
 `;
-  return svg(W, H, theme, `${config.name}. ${full(total)} contributions in the last 12 months.`, body, { defs, css });
+  const label = `Terminal session. whoami: ${config.name}, ${config.role}, ${config.location}. ${full(stats.contributions)} contributions in the last ${weeks.length} weeks.`;
+  return terminalWindow(W, BAR + PAD_Y * 2 + row * LH, BAR, `${config.shell}: ~`, label, parts.join('\n'), css);
 }
 
-function projectCard(theme, themeName, project) {
-  const W = 412, H = 142, PAD = 22;
-  const footY = H - 20;
-  const lines = wrap(project.text, (W - PAD * 2) * 0.96, 13, 2);
+/** A small terminal window showing a real screenshot of the project. */
+function showcaseCard(project) {
+  const W = 272, BAR = 26, SHOT = 160, PAD = 14, H = 286;
+  const textTop = BAR + SHOT;
+  const lines = wrapColumns(project.text, Math.floor((W - PAD * 2) / 6.9), 2);
 
   const foot = [];
-  let x = PAD;
   if (project.language) {
-    foot.push(`<circle cx="${x + 5}" cy="${footY - 4}" r="5" fill="${languageColor(project.language.color ?? '#8b949e', themeName)}"/>`);
-    foot.push(`<text class="muted" x="${x + 16}" y="${footY}" font-size="12">${esc(project.language.name)}</text>`);
-    x += 16 + textWidth(project.language.name, 12) + 16;
+    foot.push(`<circle cx="${PAD + 4}" cy="${H - 20}" r="4" fill="${onDark(project.language.color)}"/>`);
+    foot.push(`<text x="${PAD + 14}" y="${H - 16}" font-size="11" fill="${C.muted}">${esc(project.language.name)}</text>`);
   }
-  if (project.stars > 0) {
-    foot.push(`<polygon points="${starPoints(x + 6, footY - 4.5)}" fill="${theme.muted}"/>`);
-    foot.push(`<text class="muted" x="${x + 16}" y="${footY}" font-size="12">${full(project.stars)}</text>`);
+  if (project.release) {
+    foot.push(`<text x="${W - PAD}" y="${H - 16}" font-size="11" fill="${C.muted}" text-anchor="end">${esc(project.release)}</text>`);
   }
-  const fresh = [project.release, project.pushed].filter(Boolean).join(' · ');
-  foot.push(`<text class="mono faint" x="${W - PAD}" y="${footY}" font-size="10.5" text-anchor="end">${esc(fresh)}</text>`);
+  const stars = project.stars > 0
+    ? `<polygon points="${starPoints(W - PAD - 6 - String(project.stars).length * 6.9 - 6, textTop + 19)}" fill="${C.amber}"/>
+<text x="${W - PAD}" y="${textTop + 23}" font-size="11.5" fill="${C.soft}" text-anchor="end">${full(project.stars)}</text>`
+    : '';
 
-  const body = `${eyebrow(project.tag, PAD, 34)}
-<path d="M${W - PAD - 9} 35l9-9m-6 0h6v6" fill="none" stroke="${theme.faint}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="${PAD}" y="60" font-size="17.5" font-weight="700">${esc(project.title)}</text>
-${lines.map((line, i) => `<text class="muted" x="${PAD}" y="${82 + i * 18}" font-size="13">${esc(line)}</text>`).join('\n')}
+  const body = `<image x="0" y="${BAR + 1}" width="${W}" height="${SHOT}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${project.shot}"/>
+<path d="M0 ${textTop + 1.5}H${W}" stroke="${C.border}"/>
+<text x="${PAD}" y="${textTop + 24}" font-size="14" font-weight="700" fill="${C.text}">${esc(project.title)}</text>
+${stars}
+${lines.map((line, i) => `<text x="${PAD}" y="${textTop + 46 + i * 16}" font-size="11.5" fill="${C.soft}">${esc(line)}</text>`).join('\n')}
 ${foot.join('\n')}`;
-  return svg(W, H, theme, `${project.title}: ${project.text}`, body);
-}
-
-function numbersCard(theme, stats) {
-  const W = 412, H = 170, PAD = 22;
-  const cells = [
-    [full(stats.repos), 'public projects'],
-    [full(stats.started), 'started in the last year'],
-    [full(stats.packages), 'Composer packages'],
-    [compact(stats.installs), 'Packagist installs'],
-  ];
-  const body = `${eyebrow('Open source', PAD, 34)}
-${cells.map(([figure, label], i) => {
-    const x = PAD + (i % 2) * 190, y = 80 + Math.floor(i / 2) * 56;
-    return `<text x="${x}" y="${y}" font-size="25" font-weight="800">${figure}</text>\n<text class="muted" x="${x}" y="${y + 18}" font-size="12">${label}</text>`;
-  }).join('\n')}`;
-  return svg(W, H, theme, cells.map(([figure, label]) => `${figure} ${label}`).join(', '), body);
-}
-
-function languagesCard(theme, themeName, { top, rest }, repoCount) {
-  const W = 412, H = 170, PAD = 22, GAP = 2;
-  const barWidth = W - PAD * 2;
-  const segments = [...top.map((language) => ({ share: language.share, color: languageColor(language.color, themeName) }))];
-  if (rest > 0.002) segments.push({ share: rest, color: theme.track });
-
-  let x = PAD;
-  const bar = segments.map((segment) => {
-    const width = segment.share * barWidth;
-    const rect = `<rect x="${num(x)}" y="50" width="${num(Math.max(0, width - GAP))}" height="10" fill="${segment.color}"/>`;
-    x += width;
-    return rect;
-  });
-
-  const legend = top.map((language, i) => {
-    const lx = PAD + (i % 2) * 194, ly = 96 + Math.floor(i / 2) * 25;
-    return `<circle cx="${lx + 5}" cy="${ly - 4}" r="5" fill="${languageColor(language.color, themeName)}"/>
-<text x="${lx + 16}" y="${ly}" font-size="12.5">${esc(language.name)}</text>
-<text class="mono muted" x="${lx + 174}" y="${ly}" font-size="11.5" text-anchor="end">${(language.share * 100).toFixed(1)}%</text>`;
-  });
-
-  const body = `${eyebrow('Languages', PAD, 34)}
-<text class="mono faint" x="${W - PAD}" y="34" font-size="10.5" text-anchor="end">by code size · ${repoCount} repos</text>
-<g clip-path="url(#bar)">${bar.join('')}</g>
-${legend.join('\n')}`;
-  const defs = `<clipPath id="bar"><rect x="${PAD}" y="50" width="${barWidth}" height="10" rx="5"/></clipPath>\n`;
-  const label = `Languages by code size: ${top.map((language) => `${language.name} ${(language.share * 100).toFixed(1)}%`).join(', ')}`;
-  return svg(W, H, theme, label, body, { defs });
+  return terminalWindow(W, H, BAR, `~/shipped/${project.dir ?? project.repo}`, `${project.title}: ${project.text}`, body);
 }
 
 // ---------------------------------------------------------------------------------------
@@ -383,35 +386,36 @@ function replaceStats(readme, values) {
   });
 }
 
-const themedImage = (path, width, alt) =>
-  `<picture><source media="(prefers-color-scheme: dark)" srcset="${RAW}/${path}-dark.svg"><img src="${RAW}/${path}-light.svg" width="${width}" alt="${esc(alt)}"></picture>`;
+const image = (path, width, alt) => `<img src="${RAW}/${path}" width="${width}" alt="${esc(alt)}">`;
 
 // ---------------------------------------------------------------------------------------
 // Build
 // ---------------------------------------------------------------------------------------
 
 async function main() {
-  const [{ calendar, repos }, installs] = await Promise.all([fetchGithub(), fetchPackagist(config.packagistVendors)]);
+  const [{ calendar, repos }, installs, toolbox] = await Promise.all([
+    fetchGithub(),
+    fetchPackagist(config.packagistVendors),
+    toolboxIcons(join(ROOT, 'assets/toolbox.svg')),
+  ]);
 
-  const weeks = calendar.weeks.map((week) => ({
+  const weeks = calendar.weeks.slice(-53).map((week) => ({
     total: week.contributionDays.reduce((sum, day) => sum + day.contributionCount, 0),
-    days: week.contributionDays.map((day) => day.date),
+    days: week.contributionDays.length,
   }));
-  const yearAgo = Date.now() - 365 * 24 * 60 * 60 * 1000;
   const stats = {
     contributions: calendar.totalContributions,
     repos: repos.length,
     stars: repos.reduce((sum, repo) => sum + repo.stargazerCount, 0),
-    started: repos.filter((repo) => Date.parse(repo.createdAt) >= yearAgo).length,
     packages: Object.keys(installs).length,
     installs: Object.values(installs).reduce((sum, count) => sum + count, 0),
   };
-  const languages = languageShares(repos, 6);
 
   const featured = config.featured.map((entry) => {
     const repo = repos.find((candidate) => candidate.name.toLowerCase() === entry.repo.toLowerCase());
     if (!repo) throw new Error(`Featured repo "${entry.repo}" is not one of ${config.login}'s public, non-fork repos.`);
-    const pushed = new Date(repo.pushedAt);
+    const shotPath = join(ROOT, 'assets/shots', `${entry.repo}.jpg`);
+    if (!existsSync(shotPath)) throw new Error(`Featured repo "${entry.repo}" needs a 540x320 screenshot at assets/shots/${entry.repo}.jpg.`);
     const version = repo.latestRelease?.tagName.match(/\d+(\.\d+)+.*/);
     return {
       ...entry,
@@ -419,20 +423,16 @@ async function main() {
       stars: repo.stargazerCount,
       language: repo.primaryLanguage,
       release: version ? `v${version[0]}` : null,
-      pushed: `${MONTHS[pushed.getUTCMonth()]} ${pushed.getUTCFullYear()}`,
+      shot: readFileSync(shotPath).toString('base64'),
     };
   });
 
   // Everything is fetched and checked by now, so a failure above leaves the old files untouched.
-  const files = {};
-  for (const [themeName, theme] of Object.entries(THEMES)) {
-    files[`assets/hero-${themeName}.svg`] = heroCard(theme, { weeks, total: stats.contributions });
-    files[`assets/numbers-${themeName}.svg`] = numbersCard(theme, stats);
-    files[`assets/languages-${themeName}.svg`] = languagesCard(theme, themeName, languages, stats.repos);
-    for (const project of featured) {
-      files[`assets/cards/${project.repo}-${themeName}.svg`] = projectCard(theme, themeName, project);
-    }
-  }
+  const files = {
+    'assets/terminal.svg': terminalCard({ weeks, stats }),
+    'assets/toolbox.svg': toolbox,
+  };
+  for (const project of featured) files[`assets/cards/${project.repo}.svg`] = showcaseCard(project);
 
   const statValues = {
     contributions: full(stats.contributions),
@@ -442,12 +442,16 @@ async function main() {
     installs: compact(stats.installs),
     ...Object.fromEntries(Object.entries(installs).map(([name, count]) => [`installs:${name}`, compact(count)])),
   };
-  const featuredHtml = `<p align="center">\n${featured
-    .map((project) => `<a href="${project.url}">${themedImage(`assets/cards/${project.repo}`, 412, `${project.title}: ${project.text}`)}</a>`)
-    .join('\n')}\n</p>`;
+  const heroAlt = `Terminal session. whoami: ${config.name}, ${config.role}, ${config.location}. about.txt: ${config.about} `
+    + 'Then a bar for each of the last 53 weeks of contributions, and totals for repos, packages, installs and stars.';
+  const toolboxWidth = Math.min(Object.keys(config.icons).length, config.iconsPerLine) * 55 + 3;
 
   let readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
-  readme = replaceRegion(readme, 'featured', featuredHtml);
+  readme = replaceRegion(readme, 'hero', `<p align="center">\n${image('assets/terminal.svg', 830, heroAlt)}\n</p>`);
+  readme = replaceRegion(readme, 'featured', `<p align="center">\n${featured
+    .map((project) => `<a href="${project.url}">${image(`assets/cards/${project.repo}.svg`, 272, `${project.title}: ${project.text}`)}</a>`)
+    .join('\n')}\n</p>`);
+  readme = replaceRegion(readme, 'toolbox', `<p align="center">\n${image('assets/toolbox.svg', toolboxWidth, Object.values(config.icons).join(', '))}\n</p>`);
   readme = replaceStats(readme, statValues);
   files['README.md'] = readme;
 

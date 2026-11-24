@@ -2,45 +2,65 @@
   "login": "mPhpMaster",
   "branch": "main",
   "name": "Mohammad Al-Safadi",
-  "eyebrow": "Software developer · Saudi Arabia",
-  "tagline": "Laravel packages, desktop tools and small games, in Arabic and English.",
+  "role": "software developer",
+  "location": "Saudi Arabia",
+  "shell": "mphpmaster@github",
+  "about": "PHP, Laravel and Nova for years. Now also Windows tools, Android apps, browser extensions and small games, in Arabic and English.",
   "packagistVendors": ["mphpmaster", "hlack"],
+  "icons": {
+    "php": "PHP",
+    "laravel": "Laravel",
+    "js": "JavaScript",
+    "ts": "TypeScript",
+    "py": "Python",
+    "cs": "C#",
+    "kotlin": "Kotlin",
+    "go": "Go",
+    "powershell": "PowerShell",
+    "bash": "Bash",
+    "java": "Java",
+    "vue": "Vue",
+    "react": "React",
+    "nextjs": "Next.js",
+    "electron": "Electron",
+    "godot": "Godot",
+    "threejs": "Three.js",
+    "supabase": "Supabase"
+  },
+  "iconsPerLine": 9,
   "featured": [
     {
       "repo": "echo-sub",
       "title": "EchoSub",
-      "tag": "Desktop · Windows",
-      "text": "Live translated captions for anything your PC plays, in about 100 languages, on your own GPU."
+      "text": "Live translated captions for anything your PC plays"
     },
     {
       "repo": "androiddc",
       "title": "AndroidDC",
-      "tag": "Desktop · Windows",
-      "text": "One window over plain adb: mirroring, two-way tethering, files, apps and messages. No install."
+      "text": "Android device control over plain adb, in one window"
     },
     {
       "repo": "game-forge-releases",
+      "dir": "game-forge",
       "title": "Game Forge",
-      "tag": "Desktop · AI",
-      "text": "Press one button and an AI designs, builds and self-tests a browser game. 14 game types."
+      "text": "An AI designs, builds and tests a browser game from one button"
     },
     {
       "repo": "wavebreak-godot-game",
+      "dir": "wavebreak",
       "title": "Wavebreak",
-      "tag": "Game · Godot",
-      "text": "A cute 3D survivors-like with six maps, a boss on each, and online co-op for four players."
+      "text": "A cute 3D survivors-like with online co-op for four"
     },
     {
       "repo": "guess-the-language",
       "title": "Guess the Language",
-      "tag": "Game · Web · Discord",
-      "text": "A quiz game with 12 modes and a live global leaderboard, on Windows, the web and Discord."
+      "text": "A quiz game on Windows, the web and Discord, with 12 modes"
     },
     {
       "repo": "prayer-times-reminder-chrome-ext",
+      "dir": "prayer-times-break",
       "title": "Prayer Times Break",
-      "tag": "Chrome · Android · Windows",
-      "text": "Prayer-time reminders in 11 languages. Can lock your open tabs for a set time."
+      "text": "Prayer-time reminders on Chrome, Android and Windows"
     }
   ]
 }
