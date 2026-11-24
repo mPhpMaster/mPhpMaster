@@ -37,7 +37,9 @@ query ($login: String!, $after: String) {
       pageInfo { hasNextPage endCursor }
       nodes {
         name
+        description
         url
+        isArchived
         stargazerCount
         primaryLanguage { name color }
         latestRelease { tagName publishedAt url }
@@ -436,6 +438,38 @@ function replaceStats(readme, values) {
 
 const image = (path, width, alt) => `<img src="${RAW}/${path}" width="${width}" alt="${esc(alt)}">`;
 
+/**
+ * Every Laravel and PHP repo, so none is left out by hand: PHP or Blade repos, anything
+ * with "laravel" or "nova" in its name, and the extra names in the config. Each goes into
+ * the first group whose name patterns fit; the last group takes whatever is left.
+ */
+function laravelList(repos, installs) {
+  const { include = [], exclude = [], groups } = config.laravel;
+  const lower = (names) => new Set(names.map((name) => name.toLowerCase()));
+  const included = lower(include), excluded = lower(exclude);
+  const buckets = groups.map((group) => ({ ...group, repos: [] }));
+
+  for (const repo of repos) {
+    const name = repo.name.toLowerCase();
+    const fits = included.has(name) || ['PHP', 'Blade'].includes(repo.primaryLanguage?.name) || /laravel|nova/.test(name);
+    if (!fits || excluded.has(name)) continue;
+    const home = buckets.find((group) => group.match.some((part) => name.includes(part)) && !(group.not ?? []).some((part) => name.includes(part)));
+    (home ?? buckets.at(-1)).repos.push(repo);
+  }
+
+  return buckets.filter((group) => group.repos.length).map((group) => {
+    const lines = group.repos
+      .sort((a, b) => b.stargazerCount - a.stargazerCount || a.name.localeCompare(b.name))
+      .map((repo) => {
+        // The first sentence of the repo description is enough for a list line.
+        const about = (repo.description ?? '').trim().split(/(?<=\.)\s+/)[0].replace(/\.$/, '');
+        const count = installs[`${config.packagistVendors[0]}/${repo.name.toLowerCase()}`] ?? 0;
+        return `- [${repo.name}](${repo.url})${about ? `: ${about}` : ''}${count >= 100 ? ` · ${compact(count)} installs` : ''}${repo.isArchived ? ' · archived' : ''}`;
+      });
+    return `**${group.title}**\n\n${lines.join('\n')}`;
+  }).join('\n\n');
+}
+
 // ---------------------------------------------------------------------------------------
 // Build
 // ---------------------------------------------------------------------------------------
@@ -482,21 +516,13 @@ async function main() {
     };
   });
 
-  // The newest releases across all repos, leaving out the ones the config hides.
-  const hidden = new Set((config.releases?.exclude ?? []).map((name) => name.toLowerCase()));
-  const releases = repos
-    .filter((repo) => repo.latestRelease?.publishedAt && !hidden.has(repo.name.toLowerCase()))
-    .map((repo) => {
-      const version = repo.latestRelease.tagName.match(/\d+(\.\d+)+.*/);
-      return {
-        title: config.featured.find((entry) => entry.repo.toLowerCase() === repo.name.toLowerCase())?.title ?? repo.name,
-        version: version ? `v${version[0]}` : repo.latestRelease.tagName,
-        date: repo.latestRelease.publishedAt.slice(0, 10),
-        url: repo.latestRelease.url,
-      };
-    })
-    .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
-    .slice(0, config.releases?.count ?? 3);
+  // One badge per showcased project that publishes releases. shields.io reads the version
+  // from GitHub when the page is viewed and the link goes to /releases/latest, so a new
+  // release shows up by itself, with no rebuild of this page.
+  const releaseBadges = featured.filter((project) => project.release).map((project) => {
+    const badge = `https://img.shields.io/github/v/release/${config.login}/${project.repo}?label=${encodeURIComponent(project.title)}&amp;style=flat-square&amp;labelColor=161b22&amp;color=2ea043`;
+    return `<a href="${project.url}/releases/latest"><img src="${badge}" alt="${esc(project.title)}: latest release"></a>`;
+  });
 
   // Everything is fetched and checked by now, so a failure above leaves the old files untouched.
   const files = {
@@ -521,9 +547,8 @@ async function main() {
   let readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
   // Phones get the narrow terminal: GitHub keeps the width media query on the <source>.
   readme = replaceRegion(readme, 'hero', `<p align="center">\n<picture><source media="(max-width: 767px)" srcset="${RAW}/assets/terminal-mobile.svg">${image('assets/terminal.svg', 830, heroAlt)}</picture>\n</p>`);
-  readme = replaceRegion(readme, 'releases', releases
-    .map((release) => `- \`${release.date}\` [${release.title} ${release.version}](${release.url})`)
-    .join('\n'));
+  readme = replaceRegion(readme, 'releases', `<p>\n${releaseBadges.join('\n')}\n</p>`);
+  readme = replaceRegion(readme, 'laravel', laravelList(repos, installs));
   readme = replaceRegion(readme, 'featured', `<p align="center">\n${featured
     .map((project) => `<a href="${project.url}">${image(`assets/cards/${project.repo}.svg`, 272, `${project.title}: ${project.text}`)}</a>`)
     .join('\n')}\n</p>`);
