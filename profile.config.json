@@ -55,10 +55,43 @@
       "text": "A quiz game on Windows, the web and Discord, with 12 modes"
     },
     {
+      "repo": "FriendsInVoice",
+      "dir": "friends-in-voice",
+      "title": "FriendsInVoice",
+      "text": "Vencord plugin: see which voice rooms your friends are in",
+      "code": [
+        [["# which voice rooms are my friends in?", "dim"]],
+        [["in voice ", "green"], ["rooms your friends are in", "text"]],
+        [["my list  ", "green"], ["people you choose to follow", "text"]],
+        [["join     ", "green"], ["one click", "text"]],
+        [["alerts   ", "green"], ["when a friend joins voice", "text"]],
+        [["open     ", "green"], ["Shift + F12", "amber"]]
+      ]
+    },
+    {
       "repo": "prayer-times-reminder-chrome-ext",
       "dir": "prayer-times-break",
       "title": "Prayer Times Break",
       "text": "Prayer-time reminders on Chrome, Android and Windows"
+    },
+    {
+      "repo": "UnderZ",
+      "dir": "underz",
+      "title": "UnderZ",
+      "text": "A tiny JavaScript library with no dependencies, around since 2008",
+      "code": [
+        [["<script", "green"], [" src=", "text"], ["\"_z.js\"", "blue"], ["></script>", "green"]],
+        [["// or", "dim"]],
+        [["$ ", "green"], ["npm i @mphpmaster/underz", "text"]],
+        [["$ ", "green"], ["composer require mphpmaster/underz", "text"]],
+        [["// dependencies: none", "dim"]]
+      ]
+    },
+    {
+      "repo": "wavebreak-godot-game",
+      "dir": "wavebreak",
+      "title": "Wavebreak",
+      "text": "A cute 3D survivors-like with online co-op for four"
     },
     {
       "repo": "androiddc",

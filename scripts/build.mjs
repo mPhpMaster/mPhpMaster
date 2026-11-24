@@ -339,8 +339,14 @@ function terminalCard({ weeks, stats }) {
   return terminalWindow(W, BAR + PAD_Y * 2 + row * LH, BAR, `${config.shell}: ~`, label, parts.join('\n'), css);
 }
 
-/** Colours one line of code for a code tile: strings, method names, class names, comments. */
+const INK = { dim: C.muted, text: C.soft, bright: C.text, green: C.green, blue: '#a5d6ff', amber: C.amber, purple: '#d2a8ff', orange: '#ffa657' };
+
+/**
+ * Colours one line of a code tile. A plain string is treated as PHP-like code (strings,
+ * method names, class names, comments); a list of [text, ink] pairs is coloured as given.
+ */
 function highlight(line) {
+  if (Array.isArray(line)) return line.map(([value, ink]) => [value, INK[ink] ?? C.soft]);
   if (line.trim().startsWith('//')) return [[line, C.muted]];
   const pieces = [];
   const token = /('[^']*')|(->|::)(\w+)|\b([A-Z]\w+)/g;
@@ -361,9 +367,11 @@ function showcaseCard(project) {
   const W = 272, BAR = 26, SHOT = 160, PAD = 14, H = 286;
   const textTop = BAR + SHOT;
   const lines = wrapColumns(project.text, Math.floor((W - PAD * 2) / 6.9), 2);
+  // Code lines are centred as a block in the space a screenshot would take.
+  const codeTop = BAR + 1 + (SHOT - (project.code?.length ?? 0) * 19) / 2 + 14;
   const picture = project.code
     ? `<rect y="${BAR + 1}" width="${W}" height="${SHOT}" fill="#0d1117"/>
-${project.code.map((line, i) => `<text x="${PAD}" y="${BAR + 28 + i * 19}" font-size="11" xml:space="preserve">${highlight(line).map(([value, fill]) => `<tspan fill="${fill}">${esc(value)}</tspan>`).join('')}</text>`).join('\n')}`
+${project.code.map((line, i) => `<text x="${PAD}" y="${num(codeTop + i * 19)}" font-size="11" xml:space="preserve">${highlight(line).map(([value, fill]) => `<tspan fill="${fill}">${esc(value)}</tspan>`).join('')}</text>`).join('\n')}`
     : `<image x="0" y="${BAR + 1}" width="${W}" height="${SHOT}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${project.shot}"/>`;
 
   const foot = [];
