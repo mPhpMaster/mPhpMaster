@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="830" height="300" viewBox="0 0 830 300" role="img" aria-label="Mohammad Al-Safadi. 3,453 contributions in the last 12 months.">
+<title>Mohammad Al-Safadi. 3,453 contributions in the last 12 months.</title>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif;fill:#1B1F24}
+.mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace}
+.muted{fill:#5A636E}
+.faint{fill:#6B737E}
+.accent{fill:#B4530A}
+@media (prefers-reduced-motion:no-preference){
+.bar{transform-box:fill-box;transform-origin:50% 100%;animation:rise .8s cubic-bezier(.2,.9,.25,1) both}
+@keyframes rise{from{transform:scaleY(0)}}
+}
+</style>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFCF7"/><stop offset="1" stop-color="#FFF6E9"/></linearGradient>
+<clipPath id="panel"><rect x=".5" y=".5" width="829" height="299" rx="12"/></clipPath>
+<linearGradient id="heat" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="258"><stop offset="0" stop-color="#E5482A"/><stop offset="1" stop-color="#F5A524"/></linearGradient>
+<radialGradient id="glow"><stop offset="0" stop-color="#E5482A" stop-opacity="0.16"/><stop offset="1" stop-color="#E5482A" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x=".5" y=".5" width="829" height="299" rx="12" fill="url(#bg)" stroke="#EBDFCB"/>
+<ellipse cx="664" cy="258" rx="320" ry="150" fill="url(#glow)" clip-path="url(#panel)"/>
+<text class="mono accent" x="40" y="52" font-size="12" letter-spacing="1.6">SOFTWARE DEVELOPER · SAUDI ARABIA</text>
+<text x="40" y="100" font-size="42" font-weight="800" letter-spacing="-.8">Mohammad Al-Safadi</text>
+<text class="muted" x="40" y="130" font-size="17">Laravel packages, desktop tools and small games, in Arabic and English.</text>
+<text x="790" y="80" font-size="32" font-weight="800" text-anchor="end">3,453</text>
+<text class="mono muted" x="790" y="100" font-size="11.5" text-anchor="end">contributions · last 12 months</text>
+<path class="bar" style="animation-delay:0ms" d="M42.58 258V255.98Q42.58 252.98 45.58 252.98H48.58Q51.58 252.98 51.58 255.98V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:14ms" d="M56.73 258V252.3Q56.73 249.3 59.73 249.3H62.73Q65.73 249.3 65.73 252.3V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:28ms" d="M70.88 258V248.69Q70.88 245.69 73.88 245.69H76.88Q79.88 245.69 79.88 248.69V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:42ms" d="M85.03 258V258Q85.03 256 87.03 256H92.03Q94.03 256 94.03 258V258Z" fill="#EFE4D1"/>
+<path class="bar" style="animation-delay:56ms" d="M99.18 258V239.1Q99.18 236.1 102.18 236.1H105.18Q108.18 236.1 108.18 239.1V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:70ms" d="M113.33 258V245.93Q113.33 242.93 116.33 242.93H119.33Q122.33 242.93 122.33 245.93V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:84ms" d="M127.48 258V255.98Q127.48 252.98 130.48 252.98H133.48Q136.48 252.98 136.48 255.98V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:98ms" d="M141.63 258V234.41Q141.63 231.41 144.63 231.41H147.63Q150.63 231.41 150.63 234.41V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:112ms" d="M155.78 258V221.44Q155.78 218.44 158.78 218.44H161.78Q164.78 218.44 164.78 221.44V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:126ms" d="M169.93 258V249.76Q169.93 246.76 172.93 246.76H175.93Q178.93 246.76 178.93 249.76V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:140ms" d="M184.08 258V233.94Q184.08 230.94 187.08 230.94H190.08Q193.08 230.94 193.08 233.94V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:154ms" d="M198.24 258V253.89Q198.24 250.89 201.24 250.89H204.24Q207.24 250.89 207.24 253.89V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:168ms" d="M212.39 258V230.44Q212.39 227.44 215.39 227.44H218.39Q221.39 227.44 221.39 230.44V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:182ms" d="M226.54 258V247.71Q226.54 244.71 229.54 244.71H232.54Q235.54 244.71 235.54 247.71V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:196ms" d="M240.69 258V250.95Q240.69 247.95 243.69 247.95H246.69Q249.69 247.95 249.69 250.95V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:210ms" d="M254.84 258V233.02Q254.84 230.02 257.84 230.02H260.84Q263.84 230.02 263.84 233.02V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:224ms" d="M268.99 258V191.2Q268.99 188.2 271.99 188.2H274.99Q277.99 188.2 277.99 191.2V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:238ms" d="M283.14 258V245.11Q283.14 242.11 286.14 242.11H289.14Q292.14 242.11 292.14 245.11V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:252ms" d="M297.29 258V242.88Q297.29 239.88 300.29 239.88H303.29Q306.29 239.88 306.29 242.88V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:266ms" d="M311.44 258V253.89Q311.44 250.89 314.44 250.89H317.44Q320.44 250.89 320.44 253.89V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:280ms" d="M325.59 258V253.89Q325.59 250.89 328.59 250.89H331.59Q334.59 250.89 334.59 253.89V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:294ms" d="M339.75 258V223.4Q339.75 220.4 342.75 220.4H345.75Q348.75 220.4 348.75 223.4V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:308ms" d="M353.9 258V231.7Q353.9 228.7 356.9 228.7H359.9Q362.9 228.7 362.9 231.7V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:322ms" d="M368.05 258V250.95Q368.05 247.95 371.05 247.95H374.05Q377.05 247.95 377.05 250.95V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:336ms" d="M382.2 258V227.29Q382.2 224.29 385.2 224.29H388.2Q391.2 224.29 391.2 227.29V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:350ms" d="M396.35 258V212.55Q396.35 209.55 399.35 209.55H402.35Q405.35 209.55 405.35 212.55V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:364ms" d="M410.5 258V245.93Q410.5 242.93 413.5 242.93H416.5Q419.5 242.93 419.5 245.93V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:378ms" d="M424.65 258V258Q424.65 256 426.65 256H431.65Q433.65 256 433.65 258V258Z" fill="#EFE4D1"/>
+<path class="bar" style="animation-delay:392ms" d="M438.8 258V225.47Q438.8 222.47 441.8 222.47H444.8Q447.8 222.47 447.8 225.47V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:406ms" d="M452.95 258V237.43Q452.95 234.43 455.95 234.43H458.95Q461.95 234.43 461.95 237.43V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:420ms" d="M467.1 258V244.34Q467.1 241.34 470.1 241.34H473.1Q476.1 241.34 476.1 244.34V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:434ms" d="M481.25 258V248.69Q481.25 245.69 484.25 245.69H487.25Q490.25 245.69 490.25 248.69V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:448ms" d="M495.41 258V248.69Q495.41 245.69 498.41 245.69H501.41Q504.41 245.69 504.41 248.69V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:462ms" d="M509.56 258V248.69Q509.56 245.69 512.56 245.69H515.56Q518.56 245.69 518.56 248.69V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:476ms" d="M523.71 258V230.85Q523.71 227.85 526.71 227.85H529.71Q532.71 227.85 532.71 230.85V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:490ms" d="M537.86 258V231.7Q537.86 228.7 540.86 228.7H543.86Q546.86 228.7 546.86 231.7V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:504ms" d="M552.01 258V223.74Q552.01 220.74 555.01 220.74H558.01Q561.01 220.74 561.01 223.74V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:518ms" d="M566.16 258V215.5Q566.16 212.5 569.16 212.5H572.16Q575.16 212.5 575.16 215.5V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:532ms" d="M580.31 258V230.85Q580.31 227.85 583.31 227.85H586.31Q589.31 227.85 589.31 230.85V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:546ms" d="M594.46 258V218.07Q594.46 215.07 597.46 215.07H600.46Q603.46 215.07 603.46 218.07V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:560ms" d="M608.61 258V212.03Q608.61 209.03 611.61 209.03H614.61Q617.61 209.03 617.61 212.03V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:574ms" d="M622.76 258V195.49Q622.76 192.49 625.76 192.49H628.76Q631.76 192.49 631.76 195.49V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:588ms" d="M636.92 258V200.92Q636.92 197.92 639.92 197.92H642.92Q645.92 197.92 645.92 200.92V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:602ms" d="M651.07 258V192.84Q651.07 189.84 654.07 189.84H657.07Q660.07 189.84 660.07 192.84V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:616ms" d="M665.22 258V198.45Q665.22 195.45 668.22 195.45H671.22Q674.22 195.45 674.22 198.45V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:630ms" d="M679.37 258V208.06Q679.37 205.06 682.37 205.06H685.37Q688.37 205.06 688.37 208.06V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:644ms" d="M693.52 258V174.56Q693.52 171.56 696.52 171.56H699.52Q702.52 171.56 702.52 174.56V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:658ms" d="M707.67 258V167Q707.67 164 710.67 164H713.67Q716.67 164 716.67 167V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:672ms" d="M721.82 258V190.48Q721.82 187.48 724.82 187.48H727.82Q730.82 187.48 730.82 190.48V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:686ms" d="M735.97 258V182.51Q735.97 179.51 738.97 179.51H741.97Q744.97 179.51 744.97 182.51V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:700ms" d="M750.12 258V196.85Q750.12 193.85 753.12 193.85H756.12Q759.12 193.85 759.12 196.85V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:714ms" d="M764.27 258V191.74Q764.27 188.74 767.27 188.74H770.27Q773.27 188.74 773.27 191.74V258Z" fill="url(#heat)"/>
+<path class="bar" style="animation-delay:728ms" d="M778.42 258V232.14Q778.42 229.14 781.42 229.14H784.42Q787.42 229.14 787.42 232.14V258Z" fill="url(#heat)" opacity=".5"/>
+<path d="M40 258.5H790" stroke="#EBDFCB"/>
+<text class="mono faint" x="56.73" y="278" font-size="10.5">Dec</text>
+<text class="mono faint" x="113.33" y="278" font-size="10.5">Jan</text>
+<text class="mono faint" x="184.08" y="278" font-size="10.5">Feb</text>
+<text class="mono faint" x="240.69" y="278" font-size="10.5">Mar</text>
+<text class="mono faint" x="297.29" y="278" font-size="10.5">Apr</text>
+<text class="mono faint" x="353.9" y="278" font-size="10.5">May</text>
+<text class="mono faint" x="424.65" y="278" font-size="10.5">Jun</text>
+<text class="mono faint" x="481.25" y="278" font-size="10.5">Jul</text>
+<text class="mono faint" x="537.86" y="278" font-size="10.5">Aug</text>
+<text class="mono faint" x="608.61" y="278" font-size="10.5">Sep</text>
+<text class="mono faint" x="665.22" y="278" font-size="10.5">Oct</text>
+<text class="mono faint" x="735.97" y="278" font-size="10.5">Nov</text>
+</svg>
