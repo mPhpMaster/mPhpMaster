@@ -9,18 +9,18 @@
 <!-- featured:start -->
 <p align="center">
 <a href="https://github.com/mPhpMaster/echo-sub"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/echo-sub.svg" width="272" alt="EchoSub: Live translated captions for anything your PC plays"></a>
-<a href="https://github.com/mPhpMaster/androiddc"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/androiddc.svg" width="272" alt="AndroidDC: Android device control over plain adb, in one window"></a>
-<a href="https://github.com/mPhpMaster/game-forge-releases"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/game-forge-releases.svg" width="272" alt="Game Forge: An AI designs, builds and tests a browser game from one button"></a>
-<a href="https://github.com/mPhpMaster/wavebreak-godot-game"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/wavebreak-godot-game.svg" width="272" alt="Wavebreak: A cute 3D survivors-like with online co-op for four"></a>
+<a href="https://github.com/mPhpMaster/laravel-zatca"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/laravel-zatca.svg" width="272" alt="laravel-zatca: Saudi e-invoicing (ZATCA) QR codes for Laravel. 2.5k installs"></a>
 <a href="https://github.com/mPhpMaster/guess-the-language"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/guess-the-language.svg" width="272" alt="Guess the Language: A quiz game on Windows, the web and Discord, with 12 modes"></a>
 <a href="https://github.com/mPhpMaster/prayer-times-reminder-chrome-ext"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/prayer-times-reminder-chrome-ext.svg" width="272" alt="Prayer Times Break: Prayer-time reminders on Chrome, Android and Windows"></a>
+<a href="https://github.com/mPhpMaster/androiddc"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/androiddc.svg" width="272" alt="AndroidDC: Android device control over plain adb, in one window"></a>
+<a href="https://github.com/mPhpMaster/game-forge-releases"><img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/cards/game-forge-releases.svg" width="272" alt="Game Forge: An AI designs, builds and tests a browser game from one button"></a>
 </p>
 <!-- featured:end -->
 
 Also in that folder:
 
 - **Tools:** [EchoSub Lens](https://github.com/mPhpMaster/echo-sub-lens) translates on-screen text in place · [Sayang Translate](https://github.com/mPhpMaster/sayang-translate-public) translates WhatsApp and Telegram chats on Android · [ATS CV Studio](https://github.com/mPhpMaster/ats-cv-studio) builds and checks CVs · [SteganographyPy](https://github.com/mPhpMaster/SteganographyPy) hides encrypted archives inside media files
-- **Games:** [LetterUp](https://github.com/mPhpMaster/letterup), a Discord word game · [MTO](https://github.com/mPhpMaster/mto-game), an Arabic strategy card game · [Maqlab](https://github.com/mPhpMaster/maqlab), a party game played from phones
+- **Games:** [Wavebreak](https://github.com/mPhpMaster/wavebreak-godot-game), a cute 3D survivors-like with online co-op · [LetterUp](https://github.com/mPhpMaster/letterup), a Discord word game · [MTO](https://github.com/mPhpMaster/mto-game), an Arabic strategy card game · [Maqlab](https://github.com/mPhpMaster/maqlab), a party game played from phones
 - **Web:** [What2Watch](https://github.com/mPhpMaster/what-to-watch) picks something to watch on Shahid or Netflix · [pixel-pets](https://github.com/mPhpMaster/pixel-pets) and [parrot.js](https://github.com/mPhpMaster/parrot.js) put pixel-art pets on your cursor
 
 ### `$ ls ~/.toolbox`

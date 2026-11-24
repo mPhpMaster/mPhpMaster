@@ -339,11 +339,32 @@ function terminalCard({ weeks, stats }) {
   return terminalWindow(W, BAR + PAD_Y * 2 + row * LH, BAR, `${config.shell}: ~`, label, parts.join('\n'), css);
 }
 
-/** A small terminal window showing a real screenshot of the project. */
+/** Colours one line of code for a code tile: strings, method names, class names, comments. */
+function highlight(line) {
+  if (line.trim().startsWith('//')) return [[line, C.muted]];
+  const pieces = [];
+  const token = /('[^']*')|(->|::)(\w+)|\b([A-Z]\w+)/g;
+  let last = 0;
+  for (let match = token.exec(line); match; match = token.exec(line)) {
+    if (match.index > last) pieces.push([line.slice(last, match.index), C.soft]);
+    if (match[1]) pieces.push([match[1], '#a5d6ff']);
+    else if (match[2]) pieces.push([match[2], C.soft], [match[3], '#d2a8ff']);
+    else pieces.push([match[4], '#ffa657']);
+    last = token.lastIndex;
+  }
+  if (last < line.length) pieces.push([line.slice(last), C.soft]);
+  return pieces;
+}
+
+/** A small terminal window showing a real screenshot of the project, or a few lines of its code. */
 function showcaseCard(project) {
   const W = 272, BAR = 26, SHOT = 160, PAD = 14, H = 286;
   const textTop = BAR + SHOT;
   const lines = wrapColumns(project.text, Math.floor((W - PAD * 2) / 6.9), 2);
+  const picture = project.code
+    ? `<rect y="${BAR + 1}" width="${W}" height="${SHOT}" fill="#0d1117"/>
+${project.code.map((line, i) => `<text x="${PAD}" y="${BAR + 28 + i * 19}" font-size="11" xml:space="preserve">${highlight(line).map(([value, fill]) => `<tspan fill="${fill}">${esc(value)}</tspan>`).join('')}</text>`).join('\n')}`
+    : `<image x="0" y="${BAR + 1}" width="${W}" height="${SHOT}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${project.shot}"/>`;
 
   const foot = [];
   if (project.language) {
@@ -358,7 +379,7 @@ function showcaseCard(project) {
 <text x="${W - PAD}" y="${textTop + 23}" font-size="11.5" fill="${C.soft}" text-anchor="end">${full(project.stars)}</text>`
     : '';
 
-  const body = `<image x="0" y="${BAR + 1}" width="${W}" height="${SHOT}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${project.shot}"/>
+  const body = `${picture}
 <path d="M0 ${textTop + 1.5}H${W}" stroke="${C.border}"/>
 <text x="${PAD}" y="${textTop + 24}" font-size="14" font-weight="700" fill="${C.text}">${esc(project.title)}</text>
 ${stars}
@@ -414,16 +435,23 @@ async function main() {
   const featured = config.featured.map((entry) => {
     const repo = repos.find((candidate) => candidate.name.toLowerCase() === entry.repo.toLowerCase());
     if (!repo) throw new Error(`Featured repo "${entry.repo}" is not one of ${config.login}'s public, non-fork repos.`);
+    // A card shows either a few lines of code from the config or a screenshot from assets/shots.
     const shotPath = join(ROOT, 'assets/shots', `${entry.repo}.jpg`);
-    if (!existsSync(shotPath)) throw new Error(`Featured repo "${entry.repo}" needs a 540x320 screenshot at assets/shots/${entry.repo}.jpg.`);
+    if (!entry.code && !existsSync(shotPath)) {
+      throw new Error(`Featured repo "${entry.repo}" needs a 540x320 screenshot at assets/shots/${entry.repo}.jpg, or "code" lines in the config.`);
+    }
+    if (entry.packagist && !(entry.packagist in installs)) {
+      throw new Error(`Featured repo "${entry.repo}" names a Packagist package that was not found: ${entry.packagist}.`);
+    }
     const version = repo.latestRelease?.tagName.match(/\d+(\.\d+)+.*/);
     return {
       ...entry,
+      text: entry.text.replace('{installs}', entry.packagist ? compact(installs[entry.packagist]) : ''),
       url: repo.url,
       stars: repo.stargazerCount,
       language: repo.primaryLanguage,
       release: version ? `v${version[0]}` : null,
-      shot: readFileSync(shotPath).toString('base64'),
+      shot: entry.code ? null : readFileSync(shotPath).toString('base64'),
     };
   });
 

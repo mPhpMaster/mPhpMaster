@@ -35,21 +35,19 @@
       "text": "Live translated captions for anything your PC plays"
     },
     {
-      "repo": "androiddc",
-      "title": "AndroidDC",
-      "text": "Android device control over plain adb, in one window"
-    },
-    {
-      "repo": "game-forge-releases",
-      "dir": "game-forge",
-      "title": "Game Forge",
-      "text": "An AI designs, builds and tests a browser game from one button"
-    },
-    {
-      "repo": "wavebreak-godot-game",
-      "dir": "wavebreak",
-      "title": "Wavebreak",
-      "text": "A cute 3D survivors-like with online co-op for four"
+      "repo": "laravel-zatca",
+      "title": "laravel-zatca",
+      "text": "Saudi e-invoicing (ZATCA) QR codes for Laravel. {installs} installs",
+      "packagist": "mphpmaster/laravel-zatca",
+      "code": [
+        "TagBag::make()",
+        "  ->setCompany('Company name')",
+        "  ->setVatId('311111111111113')",
+        "  ->setInvoiceTotalAmount('100')",
+        "  ->setVatAmount('15')",
+        "  ->toBase64();",
+        "// AQxDb21wYW55IG5hbWUCDzMx..."
+      ]
     },
     {
       "repo": "guess-the-language",
@@ -61,6 +59,17 @@
       "dir": "prayer-times-break",
       "title": "Prayer Times Break",
       "text": "Prayer-time reminders on Chrome, Android and Windows"
+    },
+    {
+      "repo": "androiddc",
+      "title": "AndroidDC",
+      "text": "Android device control over plain adb, in one window"
+    },
+    {
+      "repo": "game-forge-releases",
+      "dir": "game-forge",
+      "title": "Game Forge",
+      "text": "An AI designs, builds and tests a browser game from one button"
     }
   ]
 }
