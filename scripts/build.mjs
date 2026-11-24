@@ -444,20 +444,30 @@ const image = (path, width, alt) => `<img src="${RAW}/${path}" width="${width}" 
  * the first group whose name patterns fit; the last group takes whatever is left.
  */
 function laravelList(repos, installs) {
-  const { include = [], exclude = [], groups } = config.laravel;
+  const { include = [], exclude = [], highlight = [], groups } = config.laravel;
   const lower = (names) => new Set(names.map((name) => name.toLowerCase()));
-  const included = lower(include), excluded = lower(exclude);
+  const included = lower(include), excluded = lower(exclude), highlighted = lower(highlight);
   const buckets = groups.map((group) => ({ ...group, repos: [] }));
+  const featured = [];
 
   for (const repo of repos) {
     const name = repo.name.toLowerCase();
     const fits = included.has(name) || ['PHP', 'Blade'].includes(repo.primaryLanguage?.name) || /laravel|nova/.test(name);
     if (!fits || excluded.has(name)) continue;
+    if (highlighted.has(name)) {
+      featured.push(repo);
+      continue;
+    }
     const home = buckets.find((group) => group.match.some((part) => name.includes(part)) && !(group.not ?? []).some((part) => name.includes(part)));
     (home ?? buckets.at(-1)).repos.push(repo);
   }
 
-  return buckets.filter((group) => group.repos.length).map((group) => {
+  // Highlighted repos lead the section, in bold and with their whole description.
+  const lead = featured.length
+    ? [`**Featured**\n\n${featured.map((repo) => `- **[${repo.name}](${repo.url})**: ${(repo.description ?? '').trim()}`).join('\n')}`]
+    : [];
+
+  return lead.concat(buckets.filter((group) => group.repos.length).map((group) => {
     const lines = group.repos
       .sort((a, b) => b.stargazerCount - a.stargazerCount || a.name.localeCompare(b.name))
       .map((repo) => {
@@ -467,7 +477,7 @@ function laravelList(repos, installs) {
         return `- [${repo.name}](${repo.url})${about ? `: ${about}` : ''}${count >= 100 ? ` · ${compact(count)} installs` : ''}${repo.isArchived ? ' · archived' : ''}`;
       });
     return `**${group.title}**\n\n${lines.join('\n')}`;
-  }).join('\n\n');
+  })).join('\n\n');
 }
 
 // ---------------------------------------------------------------------------------------

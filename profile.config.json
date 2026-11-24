@@ -35,7 +35,11 @@
     "include": [
       "dto-generator"
     ],
-    "exclude": [],
+    "exclude": [
+      "callcenter-crm",
+      "ideal-employee-award",
+      "magic_beauty"
+    ],
     "groups": [
       {
         "title": "Models and queries",
@@ -71,18 +75,12 @@
         ]
       },
       {
-        "title": "Apps and starters",
-        "match": [
-          "rag-ai-training",
-          "ideal-employee-award",
-          "magic_beauty",
-          "callcenter-crm"
-        ]
-      },
-      {
         "title": "More packages",
         "match": []
       }
+    ],
+    "highlight": [
+      "rag-ai-training"
     ]
   },
   "featured": [

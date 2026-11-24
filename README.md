@@ -58,9 +58,13 @@ Also in that folder:
 
 ### `$ cat laravel.md`
 
-Published so far: <!--stat:packages-->34<!--/stat--> Composer packages on [Packagist](https://packagist.org/packages/mphpmaster/). Every Laravel and PHP repo of mine, models first:
+Published so far: <!--stat:packages-->34<!--/stat--> Composer packages on [Packagist](https://packagist.org/packages/mphpmaster/). My Laravel and PHP repos:
 
 <!-- laravel:start -->
+**Featured**
+
+- **[rag-ai-training](https://github.com/mPhpMaster/rag-ai-training)**: Production RAG system & AI chatbot in Laravel. Features pgvector search (SQLite fallback), OpenAI embeddings, bilingual Arabic/English support, and an admin UI with pipeline debugging.
+
 **Models and queries**
 
 - [laravel-model-translation-helpers](https://github.com/mPhpMaster/laravel-model-translation-helpers): Laravel model translation helpers
@@ -96,13 +100,6 @@ Published so far: <!--stat:packages-->34<!--/stat--> Composer packages on [Packa
 - [laravel-helper-loader](https://github.com/mPhpMaster/laravel-helper-loader): Laravel helpers files loader
 - [laravel-start](https://github.com/mPhpMaster/laravel-start): Laravel Helpers: Laravel Start
 - [php-tools](https://github.com/mPhpMaster/php-tools): Laravel helper library with global functions, traits and artisan setup commands
-
-**Apps and starters**
-
-- [callcenter-crm](https://github.com/mPhpMaster/callcenter-crm): DEMO · archived
-- [ideal-employee-award](https://github.com/mPhpMaster/ideal-employee-award): Laravel Nova, Ideal Employee Award Project
-- [magic_beauty](https://github.com/mPhpMaster/magic_beauty): Laravel 8 Shop For The magic of beauty
-- [rag-ai-training](https://github.com/mPhpMaster/rag-ai-training): Production RAG system & AI chatbot in Laravel
 
 **More packages**
 
