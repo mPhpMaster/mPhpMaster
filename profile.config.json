@@ -17,20 +17,18 @@
     "ts": "TypeScript",
     "py": "Python",
     "cs": "C#",
-    "kotlin": "Kotlin",
-    "go": "Go",
+    "java": "Java",
+    "mysql": "SQL",
+    "html": "HTML",
+    "css": "CSS",
     "powershell": "PowerShell",
     "bash": "Bash",
-    "java": "Java",
     "vue": "Vue",
     "react": "React",
     "nextjs": "Next.js",
-    "electron": "Electron",
-    "godot": "Godot",
-    "threejs": "Three.js",
-    "supabase": "Supabase"
+    "electron": "Electron"
   },
-  "iconsPerLine": 9,
+  "iconsPerLine": 8,
   "laravel": {
     "include": [
       "dto-generator"

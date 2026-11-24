@@ -52,7 +52,7 @@ Also in that folder:
 
 <!-- toolbox:start -->
 <p align="center">
-<img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/toolbox.svg" width="498" alt="PHP, Laravel, JavaScript, TypeScript, Python, C#, Kotlin, Go, PowerShell, Bash, Java, Vue, React, Next.js, Electron, Godot, Three.js, Supabase">
+<img src="https://raw.githubusercontent.com/mPhpMaster/mPhpMaster/main/assets/toolbox.svg" width="443" alt="PHP, Laravel, JavaScript, TypeScript, Python, C#, Java, SQL, HTML, CSS, PowerShell, Bash, Vue, React, Next.js, Electron">
 </p>
 <!-- toolbox:end -->
 

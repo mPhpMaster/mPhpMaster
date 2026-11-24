@@ -116,7 +116,9 @@ async function toolboxIcons(path) {
   const response = await fetch(url, { headers: { 'user-agent': USER_AGENT } });
   if (!response.ok) throw new Error(`Icon service failed (${response.status}): ${url}`);
   const svg = (await response.text()).trim();
-  const drawn = (svg.match(/<g transform="translate\(/g) ?? []).length;
+  // An id the service does not know still gets a slot, but with nothing drawn in it, so
+  // count the icons that really came back.
+  const drawn = (svg.match(/<svg /g) ?? []).length - 1;
   if (!svg.startsWith('<svg') || /<script|<foreignObject|\son\w+\s*=|javascript:|href\s*=\s*["']https?:/i.test(svg)) {
     throw new Error('The icon service returned something that is not a plain SVG.');
   }
