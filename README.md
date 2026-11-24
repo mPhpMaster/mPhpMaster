@@ -30,8 +30,8 @@ Also in that folder:
 
 <!-- releases:start -->
 - `2026-11-24` [Game Forge v0.9.3](https://github.com/mPhpMaster/game-forge-releases/releases/tag/v0.9.3)
+- `2026-11-24` [UnderZ v1.1.6](https://github.com/mPhpMaster/UnderZ/releases/tag/1.1.6)
 - `2026-11-21` [Wavebreak v1.7.0](https://github.com/mPhpMaster/wavebreak-godot-game/releases/tag/v1.7.0)
-- `2026-11-20` [FriendsInVoice v1.24.0](https://github.com/mPhpMaster/FriendsInVoice/releases/tag/v1.24.0)
 <!-- releases:end -->
 
 ### `$ ls ~/.toolbox`

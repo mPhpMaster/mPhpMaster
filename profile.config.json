@@ -62,15 +62,7 @@
       "repo": "FriendsInVoice",
       "dir": "friends-in-voice",
       "title": "FriendsInVoice",
-      "text": "Vencord plugin: see which voice rooms your friends are in",
-      "code": [
-        [["# which voice rooms are my friends in?", "dim"]],
-        [["in voice ", "green"], ["rooms your friends are in", "text"]],
-        [["my list  ", "green"], ["people you choose to follow", "text"]],
-        [["join     ", "green"], ["one click", "text"]],
-        [["alerts   ", "green"], ["when a friend joins voice", "text"]],
-        [["open     ", "green"], ["Shift + F12", "amber"]]
-      ]
+      "text": "Vencord plugin: see which voice rooms your friends are in"
     },
     {
       "repo": "prayer-times-reminder-chrome-ext",
