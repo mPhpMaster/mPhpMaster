@@ -14,7 +14,7 @@ text{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberatio
 <path d="M0 187.5H272" stroke="#30363d"/>
 <text x="14" y="210" font-size="14" font-weight="700" fill="#e6edf3">EchoSub</text>
 <polygon points="239.1,200 240.33,203.3 243.86,203.45 241.1,205.65 242.04,209.05 239.1,207.1 236.16,209.05 237.1,205.65 234.34,203.45 237.87,203.3" fill="#e3b341"/>
-<text x="258" y="209" font-size="11.5" fill="#c9d1d9" text-anchor="end">6</text>
+<text x="258" y="209" font-size="11.5" fill="#c9d1d9" text-anchor="end">7</text>
 <text x="14" y="232" font-size="11.5" fill="#c9d1d9">Live translated captions for</text>
 <text x="14" y="248" font-size="11.5" fill="#c9d1d9">anything your PC plays</text>
 <circle cx="18" cy="266" r="4" fill="#3572A5"/>
