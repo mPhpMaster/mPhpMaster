@@ -94,9 +94,9 @@ Published so far: <!--stat:packages-->35<!--/stat--> Composer packages on [Packa
 **Helpers**
 
 - [laravel-helpers](https://github.com/mPhpMaster/laravel-helpers): Laravel Helpers, By hlaCk
-- [laravel-app-helpers](https://github.com/mPhpMaster/laravel-app-helpers): Laravel Helpers: App · 446 installs
+- [laravel-app-helpers](https://github.com/mPhpMaster/laravel-app-helpers): Laravel Helpers: App · 447 installs
 - [laravel-dev-helpers](https://github.com/mPhpMaster/laravel-dev-helpers): Laravel helpers for quick development
-- [laravel-helpers2](https://github.com/mPhpMaster/laravel-helpers2): Laravel Helpers2 · 466 installs
+- [laravel-helpers2](https://github.com/mPhpMaster/laravel-helpers2): Laravel Helpers2 · 467 installs
 - [laravel-class-access-wrapper](https://github.com/mPhpMaster/laravel-class-access-wrapper): Laravel class access wrapper
 - [laravel-class-to-function](https://github.com/mPhpMaster/laravel-class-to-function): Laravel Helpers: Class To Function
 - [laravel-guesser-helpers](https://github.com/mPhpMaster/laravel-guesser-helpers): Laravel Guesser Helpers · 209 installs
