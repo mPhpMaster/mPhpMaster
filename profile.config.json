@@ -176,6 +176,20 @@
       "text": "Pixel-art pets that follow your cursor. No images, CSP-safe"
     },
     {
+      "repo": "laravel-nova-sanadwa-whatsapp",
+      "dir": "nova-sanadwa-whatsapp",
+      "title": "Nova SanadWA WhatsApp",
+      "text": "WhatsApp for Laravel and Nova: channel, webhooks, message log",
+      "code": [
+        "WhatsApp::send('0551234567',",
+        "  'Your order has shipped');",
+        "// or as a notification channel",
+        "return ['mail', 'whatsapp'];",
+        "// also: templates, OTP codes,",
+        "// webhooks, conversations"
+      ]
+    },
+    {
       "repo": "guess-the-language",
       "title": "Guess the Language",
       "text": "A quiz game on Windows, the web and Discord, with 12 modes"
