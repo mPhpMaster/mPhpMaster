@@ -88,7 +88,7 @@ Published so far: <!--stat:packages-->35<!--/stat--> Composer packages on [Packa
 - [laravel-nova-blueprint-permission](https://github.com/mPhpMaster/laravel-nova-blueprint-permission): Laravel And Nova With Permissions Ready To Use
 - [laravel-nova-clone-model](https://github.com/mPhpMaster/laravel-nova-clone-model): A Laravel Nova Package for clone a model Data
 - [laravel-nova-date-field](https://github.com/mPhpMaster/laravel-nova-date-field): Laravel Nova Date Field · 212 installs
-- [laravel-nova-helpers](https://github.com/mPhpMaster/laravel-nova-helpers): Laravel Nova Helpers
+- [laravel-nova-helpers](https://github.com/mPhpMaster/laravel-nova-helpers): Laravel Nova Helpers · 101 installs
 - [laravel-nova-injector](https://github.com/mPhpMaster/laravel-nova-injector): Laravel nova card to inject view or text into nova resource
 - [laravel-nova-next-input-focus](https://github.com/mPhpMaster/laravel-nova-next-input-focus): Laravel Nova Next Input Auto Focus
 - [nova-info-card](https://github.com/mPhpMaster/nova-info-card): Laravel Nova Resource Information Card
@@ -97,12 +97,12 @@ Published so far: <!--stat:packages-->35<!--/stat--> Composer packages on [Packa
 **Helpers**
 
 - [laravel-helpers](https://github.com/mPhpMaster/laravel-helpers): Laravel Helpers, By hlaCk
-- [laravel-app-helpers](https://github.com/mPhpMaster/laravel-app-helpers): Laravel Helpers: App · 441 installs
+- [laravel-app-helpers](https://github.com/mPhpMaster/laravel-app-helpers): Laravel Helpers: App · 450 installs
 - [laravel-dev-helpers](https://github.com/mPhpMaster/laravel-dev-helpers): Laravel helpers for quick development
-- [laravel-helpers2](https://github.com/mPhpMaster/laravel-helpers2): Laravel Helpers2 · 461 installs
+- [laravel-helpers2](https://github.com/mPhpMaster/laravel-helpers2): Laravel Helpers2 · 470 installs
 - [laravel-class-access-wrapper](https://github.com/mPhpMaster/laravel-class-access-wrapper): Laravel class access wrapper
 - [laravel-class-to-function](https://github.com/mPhpMaster/laravel-class-to-function): Laravel Helpers: Class To Function
-- [laravel-guesser-helpers](https://github.com/mPhpMaster/laravel-guesser-helpers): Laravel Guesser Helpers · 204 installs
+- [laravel-guesser-helpers](https://github.com/mPhpMaster/laravel-guesser-helpers): Laravel Guesser Helpers · 212 installs
 - [laravel-helper-loader](https://github.com/mPhpMaster/laravel-helper-loader): Laravel helpers files loader
 - [laravel-start](https://github.com/mPhpMaster/laravel-start): Laravel Helpers: Laravel Start
 - [php-tools](https://github.com/mPhpMaster/php-tools): Laravel helper library with global functions, traits and artisan setup commands
