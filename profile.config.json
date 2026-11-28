@@ -93,6 +93,125 @@
       "text": "Translates the text on your screen, in place"
     },
     {
+      "repo": "rag-ai-training",
+      "title": "rag-ai-training",
+      "text": "RAG knowledge base and chatbot in Laravel, with pgvector search",
+      "code": [
+        [
+          [
+            "POST ",
+            "green"
+          ],
+          [
+            "/api/chat",
+            "bright"
+          ]
+        ],
+        [
+          [
+            "{ ",
+            "text"
+          ],
+          [
+            "\"message\"",
+            "blue"
+          ],
+          [
+            ": ",
+            "text"
+          ],
+          [
+            "\"What is Laravel?\"",
+            "orange"
+          ],
+          [
+            " }",
+            "text"
+          ]
+        ],
+        [
+          [
+            "// the answer comes with its sources",
+            "dim"
+          ]
+        ],
+        [
+          [
+            "{ ",
+            "text"
+          ],
+          [
+            "\"answer\"",
+            "blue"
+          ],
+          [
+            ": ",
+            "text"
+          ],
+          [
+            "\"Laravel is a free...\"",
+            "orange"
+          ],
+          [
+            ",",
+            "text"
+          ]
+        ],
+        [
+          [
+            "  ",
+            "text"
+          ],
+          [
+            "\"sources\"",
+            "blue"
+          ],
+          [
+            ": [{ ",
+            "text"
+          ],
+          [
+            "\"id\"",
+            "blue"
+          ],
+          [
+            ": ",
+            "text"
+          ],
+          [
+            "1",
+            "amber"
+          ],
+          [
+            ",",
+            "text"
+          ]
+        ],
+        [
+          [
+            "    ",
+            "text"
+          ],
+          [
+            "\"similarity\"",
+            "blue"
+          ],
+          [
+            ": ",
+            "text"
+          ],
+          [
+            "0.7425",
+            "amber"
+          ],
+          [
+            " }] }",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
       "repo": "laravel-zatca",
       "title": "laravel-zatca",
       "text": "Saudi e-invoicing (ZATCA) QR codes for Laravel. {installs} installs",
@@ -106,6 +225,30 @@
         "  ->toBase64();",
         "// AQxDb21wYW55IG5hbWUCDzMx..."
       ]
+    },
+    {
+      "repo": "pixel-pets",
+      "title": "pixel-pets",
+      "text": "Pixel-art pets that follow your cursor. No images, CSP-safe"
+    },
+    {
+      "repo": "laravel-nova-sanadwa-whatsapp",
+      "dir": "nova-sanadwa-whatsapp",
+      "title": "Nova SanadWA WhatsApp",
+      "text": "WhatsApp for Laravel and Nova: channel, webhooks, message log",
+      "code": [
+        "WhatsApp::send('0551234567',",
+        "  'Your order has shipped');",
+        "// or as a notification channel",
+        "return ['mail', 'whatsapp'];",
+        "// also: templates, OTP codes,",
+        "// webhooks, conversations"
+      ]
+    },
+    {
+      "repo": "guess-the-language",
+      "title": "Guess the Language",
+      "text": "A quiz game on Windows, the web and Discord, with 12 modes"
     },
     {
       "repo": "ats-cv-studio",
@@ -171,30 +314,6 @@
       ]
     },
     {
-      "repo": "pixel-pets",
-      "title": "pixel-pets",
-      "text": "Pixel-art pets that follow your cursor. No images, CSP-safe"
-    },
-    {
-      "repo": "laravel-nova-sanadwa-whatsapp",
-      "dir": "nova-sanadwa-whatsapp",
-      "title": "Nova SanadWA WhatsApp",
-      "text": "WhatsApp for Laravel and Nova: channel, webhooks, message log",
-      "code": [
-        "WhatsApp::send('0551234567',",
-        "  'Your order has shipped');",
-        "// or as a notification channel",
-        "return ['mail', 'whatsapp'];",
-        "// also: templates, OTP codes,",
-        "// webhooks, conversations"
-      ]
-    },
-    {
-      "repo": "guess-the-language",
-      "title": "Guess the Language",
-      "text": "A quiz game on Windows, the web and Discord, with 12 modes"
-    },
-    {
       "repo": "prayer-times-reminder-chrome-ext",
       "dir": "prayer-times-break",
       "title": "Prayer Times Break",
@@ -205,6 +324,12 @@
       "dir": "friends-in-voice",
       "title": "FriendsInVoice",
       "text": "Vencord plugin: see which voice rooms your friends are in"
+    },
+    {
+      "repo": "wavebreak-godot-game",
+      "dir": "wavebreak",
+      "title": "Wavebreak",
+      "text": "A cute 3D survivors-like with online co-op for four"
     },
     {
       "repo": "UnderZ",
@@ -265,10 +390,68 @@
       ]
     },
     {
-      "repo": "wavebreak-godot-game",
-      "dir": "wavebreak",
-      "title": "Wavebreak",
-      "text": "A cute 3D survivors-like with online co-op for four"
+      "repo": "sayang-translate-public",
+      "dir": "sayang-translate",
+      "title": "Sayang Translate",
+      "text": "Android chat translator for couples and friends in different languages",
+      "code": [
+        [
+          [
+            "# Sayang Translate, Android",
+            "dim"
+          ]
+        ],
+        [
+          [
+            "chats   ",
+            "green"
+          ],
+          [
+            "WhatsApp and Telegram",
+            "text"
+          ]
+        ],
+        [
+          [
+            "screen  ",
+            "green"
+          ],
+          [
+            "translate any screen in place",
+            "text"
+          ]
+        ],
+        [
+          [
+            "slang   ",
+            "green"
+          ],
+          [
+            "understood, shared dictionary",
+            "text"
+          ]
+        ],
+        [
+          [
+            "ai      ",
+            "green"
+          ],
+          [
+            "Gemini, with your own key",
+            "amber"
+          ]
+        ],
+        [
+          [
+            "server  ",
+            "green"
+          ],
+          [
+            "none, collects nothing",
+            "text"
+          ]
+        ]
+      ]
     },
     {
       "repo": "androiddc",

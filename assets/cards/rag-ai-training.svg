@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="272" height="286" viewBox="0 0 272 286" role="img" aria-label="rag-ai-training: RAG knowledge base and chatbot in Laravel, with pgvector search">
+<title>rag-ai-training: RAG knowledge base and chatbot in Laravel, with pgvector search</title>
+<style>
+text{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace}
+</style>
+<defs><clipPath id="frame"><rect x=".5" y=".5" width="271" height="285" rx="10"/></clipPath></defs>
+<g clip-path="url(#frame)">
+<rect width="272" height="286" fill="#010409"/>
+<rect width="272" height="26" fill="#161b22"/>
+<path d="M0 26.5H272" stroke="#30363d"/>
+<circle cx="14" cy="13" r="3.5" fill="#ff5f56"/><circle cx="26" cy="13" r="3.5" fill="#ffbd2e"/><circle cx="38" cy="13" r="3.5" fill="#27c93f"/>
+<text x="156.75" y="17" font-size="11" fill="#8b949e" text-anchor="middle">~/shipped/rag-ai-training</text>
+<rect y="27" width="272" height="160" fill="#0d1117"/>
+<text x="14" y="64" font-size="11" xml:space="preserve"><tspan fill="#3fb950">POST </tspan><tspan fill="#e6edf3">/api/chat</tspan></text>
+<text x="14" y="83" font-size="11" xml:space="preserve"><tspan fill="#c9d1d9">{ </tspan><tspan fill="#a5d6ff">&quot;message&quot;</tspan><tspan fill="#c9d1d9">: </tspan><tspan fill="#ffa657">&quot;What is Laravel?&quot;</tspan><tspan fill="#c9d1d9"> }</tspan></text>
+<text x="14" y="102" font-size="11" xml:space="preserve"><tspan fill="#8b949e">// the answer comes with its sources</tspan></text>
+<text x="14" y="121" font-size="11" xml:space="preserve"><tspan fill="#c9d1d9">{ </tspan><tspan fill="#a5d6ff">&quot;answer&quot;</tspan><tspan fill="#c9d1d9">: </tspan><tspan fill="#ffa657">&quot;Laravel is a free...&quot;</tspan><tspan fill="#c9d1d9">,</tspan></text>
+<text x="14" y="140" font-size="11" xml:space="preserve"><tspan fill="#c9d1d9">  </tspan><tspan fill="#a5d6ff">&quot;sources&quot;</tspan><tspan fill="#c9d1d9">: [{ </tspan><tspan fill="#a5d6ff">&quot;id&quot;</tspan><tspan fill="#c9d1d9">: </tspan><tspan fill="#e3b341">1</tspan><tspan fill="#c9d1d9">,</tspan></text>
+<text x="14" y="159" font-size="11" xml:space="preserve"><tspan fill="#c9d1d9">    </tspan><tspan fill="#a5d6ff">&quot;similarity&quot;</tspan><tspan fill="#c9d1d9">: </tspan><tspan fill="#e3b341">0.7425</tspan><tspan fill="#c9d1d9"> }] }</tspan></text>
+<path d="M0 187.5H272" stroke="#30363d"/>
+<text x="14" y="210" font-size="14" font-weight="700" fill="#e6edf3">rag-ai-training</text>
+
+<text x="14" y="232" font-size="11.5" fill="#c9d1d9">RAG knowledge base and chatbot in</text>
+<text x="14" y="248" font-size="11.5" fill="#c9d1d9">Laravel, with pgvector search</text>
+<circle cx="18" cy="266" r="4" fill="#616da0"/>
+<text x="28" y="270" font-size="11" fill="#8b949e">PHP</text>
+</g>
+<rect x=".5" y=".5" width="271" height="285" rx="10" fill="none" stroke="#30363d"/>
+</svg>
